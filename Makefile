@@ -14,6 +14,9 @@ RM = rm -f
 
 all: ${NAME}
 
+$(LIBFT):
+	$(MAKE) -C ./libft
+
 norm:
 	norminette $(SRCS) includes
 
@@ -23,16 +26,18 @@ valgrind: all
 exe: all
 	./minishell
 
-${NAME}: ${OBJS}
-	${CC} ${FLAGS} ${OBJS} -lreadline -o ${NAME}
+${NAME}: ${OBJS} $(LIBFT)
+	${CC} ${FLAGS} ${OBJS} -lreadline $(LIBFT) -o ${NAME}
 
 %.o: %.c
 	${CC} ${FLAGS} -c $< -o $@
 
-clean:
-	${RM} ${OBJS}
+clean: 
+	$(MAKE) clean -C ./libft
+	$(RM) $(OBJS)
 
 fclean: clean
-	${RM} ${NAME}
+	$(MAKE) fclean -C ./libft
+	$(RM) $(NAME)
 
 re: fclean all
