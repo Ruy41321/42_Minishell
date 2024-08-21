@@ -4,9 +4,9 @@ CC = cc
 
 LIBFT = ./libft/libft.a
 
-FLAGS = -Wall -Wextra -Werror -Iincludes -I./libft
+FLAGS = -Wall -Wextra  -Iincludes -I./libft -g -fsanitize=address
 
-SRCS = main.c 
+SRCS = main.c srcs/signals.c srcs/command.c srcs/executing.c srcs/utils.c srcs/lexing_handling.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -15,24 +15,25 @@ RM = rm -f
 all: ${NAME}
 
 $(LIBFT):
-	$(MAKE) -C ./libft
+	$(MAKE) all -C ./libft
 
 norm:
 	norminette $(SRCS) includes
 
 valgrind: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes ./$(NAME)
 
-exe: all
+test: all
 	./minishell
 
 ${NAME}: ${OBJS} $(LIBFT)
 	${CC} ${FLAGS} ${OBJS} -lreadline $(LIBFT) -o ${NAME}
+	make clean
 
 %.o: %.c
 	${CC} ${FLAGS} -c $< -o $@
 
-clean: 
+clean:
 	$(MAKE) clean -C ./libft
 	$(RM) $(OBJS)
 

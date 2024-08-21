@@ -1,0 +1,53 @@
+--------------------------------------------------------------------------------------------------------------
+Da Fare:
+
+4. Implementazione dei Built-in (come in bash):
+   - echo con l'opzione -n
+   - cd utilizzando solo un percorso relativo o assoluto
+   - pwd senza opzioni
+   - export senza opzioni
+   - unset senza opzioni
+   - env senza opzioni e argomenti
+   - exit senza opzioni
+
+5. Comportamento delle Caratteristiche del Linguaggio (come in bash):
+   - Gestione delle stringhe:
+     - ' e " dovrebbero funzionare come in bash, ad eccezione dei comandi multilinea.
+   - Redirezioni:
+     - <, >, >> dovrebbero funzionare come in bash, tranne che per l'aggregazione dei descrittori di file.
+   - Pipe:
+     - | dovrebbe funzionare come in bash, eccetto per i comandi multilinea.
+
+
+--------------------------------------------------------------------------------------------------------------
+Da vedere infine:
+
+1. Non usare più di una variabile globale:
+  Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
+
+3. Ricerca ed Esecuzione di Eseguibili:
+   - Cercare ed eseguire il giusto eseguibile basato sulla variabile PATH o su un percorso relativo o assoluto, simile a come funziona in bash.
+   
+--------------------------------------------------------------------------------------------------------------
+Gia fatto:
+
+7. Navigazione nella Cronologia dei Comandi:
+   - Navigazione:
+     - Usa le frecce su e giù per navigare attraverso i comandi, utilizzando termcap (obbligatorio).
+     - Dovresti essere in grado di editare la linea corrente (non la cronologia), come avviene per le linee classiche in bash.
+     
+6. Gestione delle Interruzioni (come in bash):
+   - Interruzioni:
+     - ctrl-C, ctrl-D, e ctrl-\ dovrebbero avere lo stesso effetto che in bash.
+     
+2. Prompt:
+   Mostrare un prompt quando il sistema è in attesa di un nuovo comando.
+
+5.
+   - Variabili d'ambiente:
+     - $ seguito da caratteri dovrebbe funzionare come in bash.
+   - Gestione del codice di uscita:
+     - $? dovrebbe funzionare come in bash.
+   - Separazione dei comandi:
+     - ; nel comando dovrebbe separare i comandi, come in bash.
+-------------------------------------------------------

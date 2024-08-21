@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:47:15 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/02/11 10:52:14 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:02:24 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		ft_tolower(int c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, unsigned int n);
+int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_memchr(const void *str, int c, size_t n);
 int		ft_memcmp(const void *str1, const void *str2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
@@ -52,6 +53,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(char *src);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_free(char *s1, char *s2, int both);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(const char *s, char c);
 char	*ft_itoa(int nb);
@@ -78,5 +80,6 @@ int		ft_putnbr(int n);
 int		ft_put_unsnbr(unsigned int n);
 int		ft_puthex(unsigned int n, char flag);
 long	ft_atol(const char *str);
+char	*ft_strtok(char *str, const char *delim);
 
 #endif

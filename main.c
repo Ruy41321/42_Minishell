@@ -6,90 +6,73 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/14 17:14:42 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:35:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**parse_command(char *input)
-{
-	char	**command;
-	char	*token;
-	int		i;
+long long g_exit_status = 0;
 
-	i = 0;
-	command = malloc(sizeof(char *) * 20);
-	if (command == NULL)
+void	free_head(t_env_var *head)
+{
+	t_env_var	*tmp;
+
+	while (head->next != NULL)
 	{
-		perror("Error allocating memory to command");
-		exit(1);
+		tmp = head;
+		head = head->next;
+		free(tmp->name);
+		free(tmp->value);
+		free(tmp);
 	}
-	token = strtok(input, " ");
-	while (token != NULL)
+	if (head->name != NULL)
 	{
-		command[i] = token;
-		token = strtok(NULL, " ");
-		i++;
+		free(head->name);
+		free(head->value);
 	}
-	command[i] = NULL;
-	return (command);
+	free(head);
 }
 
-void signal_handler1(int sig)
+t_env_var	*get_head(void)
 {
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		//exit(130);
-	}
+	t_env_var	*head;
+
+	head = malloc(sizeof(t_env_var));
+    if (head == NULL)
+    {
+        perror("Error allocating memory to head");
+        exit(1);
+    }
+	head->name = NULL;
+	head->value = NULL;
+	head->next = NULL;
+	return (head);
 }
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
-	int		child_status;
-    char	*input;
-	char	**command;
-	pid_t	child;
+    char        *input;
+    t_env_var   *head;
 
+	// for (envp = envp; *envp != NULL; envp++)
+	// 	printf("%s\n", *envp);
+	// return 0;
+
+	if (argc > 1 && argv)
+	{
+		ft_putstr_fd("Error: too many arguments\n", 2);
+		return (1);
+	}
+	head = get_head();
     while (1)
     {
-		signal(SIGINT, signal_handler1);
-		signal(SIGQUIT, SIG_IGN);
-        input = readline("minishell$ ");
-		if (input == NULL)
-		{
-			free(input);
-			exit(0);
-		}
-		add_history(input);
-		command = parse_command(input);
-
-		child = fork();
-		if (child < 0) {
-            perror("Fork failed");
-            exit(1);
-        }
-		if (child == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			if (execvp(command[0], command) == -1)
-			{
-				perror("Error executing command");
-				exit(127);
-			}
-		}
-		else
-		{
-			signal(SIGINT, SIG_IGN);
-			waitpid(child, &child_status, WUNTRACED);
-		}
-		free(input);
-		free(command);
+        signal_init();
+        if((input = get_input(envp)) == NULL)
+			break ;
+        parse_and_exec(head, input, envp);
     }
-    
-    return 0;
+	free_head(head);
+	ft_printf("exit\n");
+    return (0);
 }
