@@ -10,23 +10,13 @@ Da Fare:
    - env senza opzioni e argomenti
    - exit senza opzioni
 
-5. Comportamento delle Caratteristiche del Linguaggio (come in bash):
-   - Gestione delle stringhe:
-     - ' e " dovrebbero funzionare come in bash, ad eccezione dei comandi multilinea.
-   - Redirezioni:
-     - <, >, >> dovrebbero funzionare come in bash, tranne che per l'aggregazione dei descrittori di file.
-   - Pipe:
-     - | dovrebbe funzionare come in bash, eccetto per i comandi multilinea.
-
-
+=======================================================================================================
 --------------------------------------------------------------------------------------------------------------
 Da vedere infine:
 
 1. Non usare più di una variabile globale:
   Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
 
-3. Ricerca ed Esecuzione di Eseguibili:
-   - Cercare ed eseguire il giusto eseguibile basato sulla variabile PATH o su un percorso relativo o assoluto, simile a come funziona in bash.
    
 --------------------------------------------------------------------------------------------------------------
 Gia fatto:
@@ -42,12 +32,22 @@ Gia fatto:
      
 2. Prompt:
    Mostrare un prompt quando il sistema è in attesa di un nuovo comando.
+   
+3. Ricerca ed Esecuzione di Eseguibili:
+   - Cercare ed eseguire il giusto eseguibile basato sulla variabile PATH o su un percorso relativo o assoluto, simile a come funziona in bash.
 
-5.
+5. Comportamento delle Caratteristiche del Linguaggio (come in bash):
+
    - Variabili d'ambiente:
      - $ seguito da caratteri dovrebbe funzionare come in bash.
    - Gestione del codice di uscita:
      - $? dovrebbe funzionare come in bash.
    - Separazione dei comandi:
      - ; nel comando dovrebbe separare i comandi, come in bash.
+   - Gestione delle stringhe:
+     - ' e " dovrebbero funzionare come in bash, ad eccezione dei comandi multilinea.
+   - Redirezioni:
+     - <, >, >> dovrebbero funzionare come in bash, tranne che per l'aggregazione dei descrittori di file.
+   - Pipe:
+     - | dovrebbe funzionare come in bash, eccetto per i comandi multilinea.
 -------------------------------------------------------

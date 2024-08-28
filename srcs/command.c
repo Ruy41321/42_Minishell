@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 15:46:58 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:58:59 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,59 @@
 char	**get_list_command(char *input)
 {
 	char	**command;
-	char	*token;
-	int		i;
+	int		counts[3];
+	int		quotes[2];
 
-	i = 0;
-	command = malloc(sizeof(char *) * 20);
-	if (command == NULL)
+	init_separeted(&command, quotes, counts, input);
+	while (input[++(counts[1])] != '\0')
 	{
-		perror("Error allocating memory to command");
-		exit(1);
+		if (input[counts[1]] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (input[counts[1]] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else if (input[counts[1]] == ' ' && !quotes[0] && !quotes[1])
+		{
+			command[counts[0]++][counts[2]] = '\0';
+			counts[2] = 0;
+			command[counts[0]] = safe_malloc(sizeof(char) * \
+			(ft_strlen(input) - \
+			ft_strlen(command[counts[0] - 1]) + 1));
+			continue ;
+		}
+		command[counts[0]][counts[2]++] = input[counts[1]];
 	}
-	token = ft_strtok(input, " ");
-	while (token != NULL)
-	{
-		command[i] = token;
-		token = ft_strtok(NULL, " ");
-		i++;
-	}
-	command[i] = NULL;
+	command[counts[0]][counts[2]] = '\0';
+	command[counts[0] + 1] = NULL;
 	return (command);
 }
 
 void	parse_and_exec(t_env_var *head, char *input, char **envp)
 {
-    char	**separated_inputs;
+	char	**separated_inputs;
 	char	**command;
 	char	*new_input;
-    int		i;
+	int		i;
 
-	new_input = substitute_$(head, input);
-	separated_inputs = get_separeted_inputs(new_input);
-	i = -1;
-    while (separated_inputs[++i] != NULL)
+	if (only_spaces(input))
 	{
-		command = get_list_command(separated_inputs[i]);
-		execute_command(head, command, envp);
-		free_command(command);
+		free(input);
+		return ;
 	}
-    free(separated_inputs);
+	new_input = deep_clean_input(input);
+	if (!new_input)
+		return ;
+	separated_inputs = get_separeted_inputs(new_input);
+	free(new_input);
+	i = -1;
+	while (separated_inputs[++i] != NULL)
+	{
+		new_input = substitute_dollar(head, separated_inputs[i]);
+		input = clean_input(new_input, ' ');
+		command = get_list_command(input);
+		execute_command(head, command, envp);
+		free(input);
+	}
+	free(separated_inputs);
 }
 
 char	*get_pwd(char **envp)
@@ -63,17 +78,16 @@ char	*get_pwd(char **envp)
 
 	pwd = get_env_var(envp, "PWD");
 	home = get_env_var(envp, "HOME");
-
-    // Check if pwd starts with home and replace with ~
-    if (home && pwd && strncmp(pwd, home, strlen(home)) == 0) {
-        new_pwd = malloc(strlen(pwd) - strlen(home) + 2); // +2 for '~' and null terminator
-        if (new_pwd)
+	if (home && pwd && strncmp(pwd, home, strlen(home)) == 0)
+	{
+		new_pwd = malloc(strlen(pwd) - strlen(home) + 2);
+		if (new_pwd)
 		{
-            new_pwd[0] = '~';
-            strcpy(new_pwd + 1, pwd + strlen(home));
-            return (new_pwd);
-        }
-    }
+			new_pwd[0] = '~';
+			strcpy(new_pwd + 1, pwd + strlen(home));
+			return (new_pwd);
+		}
+	}
 	return (pwd);
 }
 
@@ -106,20 +120,20 @@ char	*get_colored_prompt(char **envp)
 	return (temp2);
 }
 
-char    *get_input(char **envp)
+char	*get_input(char **envp)
 {
-	char    *input;
+	char	*input;
 	char	*prompt;
 
 	prompt = get_colored_prompt(envp);
-    input = readline(prompt);
-    if (input == NULL)
-    {
-        free(input);
+	input = readline(prompt);
+	if (input == NULL)
+	{
+		free(input);
 		free(prompt);
-        return(NULL);
-    }
-    add_history(input);
+		return (NULL);
+	}
+	add_history(input);
 	free(prompt);
 	return (input);
 }

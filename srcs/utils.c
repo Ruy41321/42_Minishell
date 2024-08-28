@@ -6,71 +6,59 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:19:20 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 16:30:02 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:17:54 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern long long g_exit_status;
+extern long long	g_exit_status;
 
-int len(char **array) {
-    int count = 0;
-    while (array[count] != NULL) {
-        count++;
-    }
-    return count;
+int	only_spaces(char *input)
+{
+	while (*input)
+	{
+		if (*input != ' ')
+			return (0);
+		input++;
+	}
+	return (1);
 }
 
-void	free_command(char **command)
+int	len(char **array)
 {
-	free(*command);
+	int	count;
+
+	count = 0;
+	while (array[count] != NULL)
+	{
+		count++;
+	}
+	return (count);
+}
+
+void	free_command(char **command, int len)
+{
+	int	i;
+
+	i = 0;
+	if (len == -1)
+	{
+		while (command[i] != NULL)
+		{
+			free(command[i]);
+			i++;
+		}
+		free(command);
+		return ;
+	}
+	while (i < len)
+	{
+		if (command[i] != NULL)
+			free(command[i]);
+		i++;
+	}
 	free(command);
-}
-
-char    *get_exit_status(void)
-{
-    char *exit_status;
-
-    exit_status = ft_itoa(g_exit_status);
-    if (exit_status == NULL)
-    {
-        perror("Error getting exit status");
-        exit(1);
-    }
-    return(exit_status);
-}
-
-char    *get_local_var(t_env_var *head, char *name, char *temp)
-{
-	char	*value;
-	int		f;
-
-	f = 0;
-	if (temp == NULL)
-		value = name;
-	else
-	{
-		value = ft_substr(name, 0, temp - name);
-		f = 1;
-		temp = NULL;
-	}
-    while (head->next != NULL)
-    {
-        if (ft_strcmp(head->name, value) == 0)
-            temp = (head->value);
-        head = head->next;
-    }
-    if (head->name != NULL)
-	{
-        if (ft_strcmp(head->name, value) == 0)
-            temp = (head->value);
-	}
-	if (temp == NULL)
-		temp = getenv(value);
-	if (f == 1)
-		free(value);
-    return(temp);
 }
 
 void	*safe_malloc(size_t size)

@@ -1,0 +1,5 @@
+ls || wc
+ls ;; echo ciao
+cat file.txt || grep "pattern"
+echo "Hello" >> file.txt 
+cat < input.txt >> output.txt 

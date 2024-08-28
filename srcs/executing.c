@@ -6,107 +6,115 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 15:50:45 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:10:16 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern long long g_exit_status;
+extern long long	g_exit_status;
 
-char	*get_env_var(char **envp, const char *var_name)
-{
-    int len = ft_strlen(var_name);
-    for (int i = 0; envp[i] != NULL; i++) {
-        if (ft_strncmp(envp[i], var_name, len) == 0 && envp[i][len] == '=') {
-            return (envp[i] + len + 1);
-        }
-    }
-    return (NULL);
-}
-
-int	is_path(char *command) {
-	if (ft_strchr(command, '/') != NULL)
-		return (1);
-	return (0);
-}
-
-char	*get_full_path(char *command, char **envp) {
-    char	*ret;
-	char	*path;
-    char	**path_tokens;
-	char	*temp_path;
-    int		i;
-	int		j;
-
-	if (is_path(command))
-		return (command);
-	ret = NULL;
-    i = 0;
-    if ((path = get_env_var(envp, "PATH")) == NULL)
-		return NULL;
-    path = ft_strdup(path);
-    path_tokens = ft_split(path, ':');
-    free(path);
-    while (path_tokens[i] != NULL) {
-		temp_path = ft_strjoin(path_tokens[i], "/");
-        path = ft_strjoin(temp_path, command);
-		free(temp_path);
-        if (access(path, F_OK) == 0) {
-            ret = path;
-			break;
-        }
-        free(path);
-        i++;
-    }
-	j = 0;
-	while(path_tokens[j] != NULL)
-	{
-		free(path_tokens[j++]);
-	}
-    free(path_tokens);
-    return (ret);
-}
-
-int execute_command(t_env_var *head, char **command, char **envp)
+int	execute_command(t_env_var *head, char **command, char **envp)
 {
     pid_t	child;
     int		child_status;
     char    *equals_sign;
+	char	*full_path;
+	char	***piped_command;
+	char	***piped_command_ptr;
+	int		pipefd[2];
+	int		is_prepipe;
+	int		origin_stdout;
+	int		origin_stdin;
 
-	equals_sign = ft_strchr(*command, '=');
-	if (equals_sign != NULL)
+	origin_stdout = dup(STDOUT_FILENO);
+	origin_stdin = dup(STDIN_FILENO);
+
+	piped_command = get_piped_command(command);
+	piped_command_ptr = piped_command;
+	is_prepipe = 0;
+	while (*piped_command != NULL)
 	{
-		*equals_sign = '\0';
-		char *name = *command;
-		char *value = equals_sign + 1;
-		set_env_var(head, name, value);
-	}
-	else
-	{
-		child = fork();
-		if (child < 0)
+		if (is_prepipe)
 		{
-			perror("Fork failed");
-			exit(1);
+			dup2(pipefd[0], STDIN_FILENO);
+			dup2(origin_stdout, STDOUT_FILENO);
 		}
-		if (child == 0)
+		close(pipefd[0]);
+		is_prepipe = is_prepipe_command(*piped_command);
+		if (is_prepipe)
 		{
-			signal(SIGINT, SIG_DFL);
-			if (execve(get_full_path(command[0], envp), command, envp) == -1)
+			if (pipe(pipefd) == -1)
 			{
-				perror("Error executing command");
-				free_command(command);
+				perror("Pipe failed");
 				exit(1);
 			}
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+		}
+		equals_sign = ft_strchr(**piped_command, '=');
+		if (equals_sign != NULL)
+		{
+			*equals_sign = '\0';
+			char *name = **piped_command;
+			char *value = equals_sign + 1;
+			set_env_var(head, name, value);
 		}
 		else
 		{
-			signal(SIGINT, SIG_IGN);
-			waitpid(child, &child_status, WUNTRACED);
-			if (!WTERMSIG(child_status))
-				g_exit_status = child_status >> 8;
+			child = fork();
+			if (child < 0)
+			{
+				perror("Fork failed");
+				exit(1);
+			}
+			if (child == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				
+				if (!(*piped_command = handle_redirection(*piped_command)))
+					exit(0);
+				// remove_quotes(command);
+				if(!(full_path = get_full_path(*piped_command[0], envp)))
+				{
+					full_path = ft_strjoin(*piped_command[0], ": command not found\n");
+					ft_putstr_fd(full_path, 2);
+					free(full_path);
+					free_command(*piped_command, -1);
+					exit(1);
+				}
+				if (execve(full_path, *piped_command, envp) == -1)
+				{
+					perror(*piped_command[0]);
+					free_command(*piped_command, -1);
+					free(full_path);
+					exit(1);
+				}
+			}
+			else
+			{
+				signal(SIGINT, SIG_IGN);
+				waitpid(child, &child_status, WUNTRACED);
+				if (WTERMSIG(child_status))
+				{
+					g_exit_status = child_status >> 8;
+					dup2(origin_stdout, STDOUT_FILENO);
+					dup2(origin_stdin, STDIN_FILENO);
+					while (*piped_command != NULL)
+					{
+						free_command(*piped_command, -1);
+						piped_command++;
+					}
+					free(piped_command_ptr);
+					return (g_exit_status);
+				}
+			}
 		}
+		free_command(*piped_command, -1);
+		piped_command++;
 	}
+	free(piped_command_ptr);
+	dup2(origin_stdout, STDOUT_FILENO);
+	dup2(origin_stdin, STDIN_FILENO);
     return (0);
 }

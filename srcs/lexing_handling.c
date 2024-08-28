@@ -6,51 +6,65 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 16:48:32 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:01:51 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern long long g_exit_status;
+extern long long	g_exit_status;
 
 char	**get_separeted_inputs(char *input)
 {
 	char	**separated_inputs;
-	int		i;
+	int		counts[3];
+	int		quotes[2];
 
-	separated_inputs = malloc(sizeof(char *) * 20);
-	if (separated_inputs == NULL)
+	init_separeted(&separated_inputs, quotes, counts, input);
+	while (input[++(counts[1])] != '\0')
 	{
-		perror("Error allocating memory to separated inputs");
-		exit(1);
+		if (input[counts[1]] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (input[counts[1]] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else if (input[counts[1]] == ';' && !quotes[0] && !quotes[1])
+		{
+			separated_inputs[counts[0]++][counts[2]] = '\0';
+			counts[2] = 0;
+			separated_inputs[counts[0]] = safe_malloc(sizeof(char) * \
+			(ft_strlen(input) - \
+			ft_strlen(separated_inputs[counts[0] - 1]) + 1));
+			continue ;
+		}
+		separated_inputs[counts[0]][counts[2]++] = input[counts[1]];
 	}
-	i = 0;
-	separated_inputs[i] = ft_strtok(input, ";");
-	while (separated_inputs[i++] != NULL)
-	{
-		separated_inputs[i] = ft_strtok(NULL, ";");
-	}
+	separated_inputs[counts[0]][counts[2]] = '\0';
+	separated_inputs[counts[0] + 1] = NULL;
 	return (separated_inputs);
 }
 
-void handle_variable_expansion(char *input, int *i, char **new_input, t_env_var *head) {
-    char *space;
+void	handle_expansion(char *input, int *i, char **new_input, t_env_var *head)
+{
+    char *delim;
 
-	space = ft_strchr(input + *i + 1, ' ');
-    *new_input = ft_strjoin_free(*new_input, get_local_var(head, input + *i + 1, space), 1);
-    if (space != NULL) {
-        (*i) += (int)(space - (input + *i + 1));
-    } else {
+	delim = get_delim(input + *i + 1);
+    *new_input = ft_strjoin_free(*new_input, get_local_var(head, input + *i + 1, delim), 1);
+    if (delim != NULL)
+        (*i) += (int)(delim - (input + *i + 1));
+    else
         (*i) += ft_strlen(input + *i + 1);
-    }
 }
 
-void	fill_new_input(char **new_input, char *input, int *i, t_env_var *head)
+/**
+ * quotes[2];
+ * quotes[0] : single quotes flag
+ * quotes[1] : double quotes flag
+ */
+void	fill_new_input(t_env_var *head, char **new_input, char *input, int *i, int *quotes)
 {
 	char	temp[2];
 	
-	if (input[*i] == '$' && input[*i+1] != '\0')
+	if (input[*i] == '$' && input[*i+1] != '\0' && quotes[0] == 0)
 	{
 		if (input[*i+1] == '?')
 		{
@@ -58,7 +72,7 @@ void	fill_new_input(char **new_input, char *input, int *i, t_env_var *head)
 			(*i)++;
 		}
 		else
-			handle_variable_expansion(input, i, new_input, head);       
+			handle_expansion(input, i, new_input, head);       
 	}
 	else
 	{
@@ -68,15 +82,29 @@ void	fill_new_input(char **new_input, char *input, int *i, t_env_var *head)
 	}	
 }
 
-char    *substitute_$(t_env_var *head, char *input)
+char    *substitute_dollar(t_env_var *head, char *input)
 {
 	int		i;
     char	*new_input;
+	int		quotes[2];
 
 	i = -1;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	new_input = ft_strdup("");
 	while (input[++i] != '\0')
-		fill_new_input(&new_input, input, &i, head);
+	{
+		if (input[i] == '\'' && quotes[1] == 0)
+			quotes[0] = !quotes[0];
+		else if (input[i] == '\"' && quotes[0] == 0)
+			quotes[1] = !quotes[1];
+		fill_new_input(head, &new_input, input, &i, quotes);
+	}
+	if (quotes[0] == 1 || quotes[1] == 1)
+	{
+		free(new_input);
+		new_input = ft_strdup("echo Error: unmatched quotes");
+	}
 	free(input);
     return (new_input);
 }

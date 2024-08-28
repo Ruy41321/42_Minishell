@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:47:15 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 12:02:24 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/24 18:22:49 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int		ft_put_unsnbr(unsigned int n);
 int		ft_puthex(unsigned int n, char flag);
 long	ft_atol(const char *str);
 char	*ft_strtok(char *str, const char *delim);
+char	*ft_strcpy(char *to_copy);
 
 #endif

@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/17 11:16:45 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 17:18:56 by lpennisi         ###   ########.fr       */
+/*   Created: 2024/08/24 18:22:33 by lpennisi          #+#    #+#             */
+/*   Updated: 2024/08/24 18:22:39 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	signal_handler1(int sig)
+char	*ft_strcpy(char *to_copy)
 {
-	if (sig == SIGINT)
+	char		*copy;
+	size_t		i;
+
+	if (!to_copy)
 	{
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		copy = malloc(2 * sizeof(char));
+		copy[0] = ' ';
+		copy[1] = '\0';
+		return (copy);
 	}
-}
-
-void	signal_init(void)
-{
-	signal(SIGINT, signal_handler1);
-	signal(SIGQUIT, SIG_IGN);
+	copy = malloc((ft_strlen(to_copy) + 1) * sizeof(char));
+	i = 0;
+	while (to_copy[i])
+	{
+		copy[i] = to_copy[i];
+		i += 1;
+	}
+	copy[i] = '\0';
+	return (copy);
 }

@@ -6,13 +6,13 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 15:35:38 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:59:58 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-long long g_exit_status = 0;
+long long	g_exit_status = 0;
 
 void	free_head(t_env_var *head)
 {
@@ -38,26 +38,17 @@ t_env_var	*get_head(void)
 {
 	t_env_var	*head;
 
-	head = malloc(sizeof(t_env_var));
-    if (head == NULL)
-    {
-        perror("Error allocating memory to head");
-        exit(1);
-    }
+	head = safe_malloc(sizeof(t_env_var));
 	head->name = NULL;
 	head->value = NULL;
 	head->next = NULL;
 	return (head);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-    char        *input;
-    t_env_var   *head;
-
-	// for (envp = envp; *envp != NULL; envp++)
-	// 	printf("%s\n", *envp);
-	// return 0;
+	char		*input;
+	t_env_var	*head;
 
 	if (argc > 1 && argv)
 	{
@@ -65,14 +56,15 @@ int main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	head = get_head();
-    while (1)
-    {
-        signal_init();
-        if((input = get_input(envp)) == NULL)
+	while (1)
+	{
+		signal_init();
+		input = get_input(envp);
+		if (!input)
 			break ;
-        parse_and_exec(head, input, envp);
-    }
+		parse_and_exec(head, input, envp);
+	}
 	free_head(head);
 	ft_printf("exit\n");
-    return (0);
+	return (0);
 }
