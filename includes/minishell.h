@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 19:02:34 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:48:48 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,9 @@ char	*redirect_syntax(char *input);
 char	***get_piped_command(char **command);
 int		is_prepipe_command(char **command);
 char	*deep_clean_input(char *input);
+char	*syntax_error(char *input);
+int		redirect_input(char *file);
+int		redirect_output(char *file, int flags);
+
+# define SYNTAX_ERROR "minishell:syntax error near unexpected token `"
 #endif

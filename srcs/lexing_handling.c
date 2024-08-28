@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 17:01:51 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:28:49 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,15 @@ char	**get_separeted_inputs(char *input)
 
 void	handle_expansion(char *input, int *i, char **new_input, t_env_var *head)
 {
-    char *delim;
+	char	*delim;
 
 	delim = get_delim(input + *i + 1);
-    *new_input = ft_strjoin_free(*new_input, get_local_var(head, input + *i + 1, delim), 1);
-    if (delim != NULL)
-        (*i) += (int)(delim - (input + *i + 1));
-    else
-        (*i) += ft_strlen(input + *i + 1);
+	*new_input = ft_strjoin_free(*new_input, \
+	get_local_var(head, input + *i + 1, delim), 1);
+	if (delim != NULL)
+		(*i) += (int)(delim - (input + *i + 1));
+	else
+		(*i) += ft_strlen(input + *i + 1);
 }
 
 /**
@@ -60,32 +61,35 @@ void	handle_expansion(char *input, int *i, char **new_input, t_env_var *head)
  * quotes[0] : single quotes flag
  * quotes[1] : double quotes flag
  */
-void	fill_new_input(t_env_var *head, char **new_input, char *input, int *i, int *quotes)
+char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
 {
 	char	temp[2];
-	
-	if (input[*i] == '$' && input[*i+1] != '\0' && quotes[0] == 0)
+	char	*new_input;
+
+	new_input = ft_strdup("");
+	if (input[*i] == '$' && input[*i + 1] != '\0' && quotes[0] == 0)
 	{
-		if (input[*i+1] == '?')
+		if (input[*i + 1] == '?')
 		{
-			*new_input = ft_strjoin_free(*new_input, get_exit_status(), 3);
+			new_input = ft_strjoin_free(new_input, get_exit_status(), 3);
 			(*i)++;
 		}
 		else
-			handle_expansion(input, i, new_input, head);       
+			handle_expansion(input, i, &new_input, head);
 	}
 	else
 	{
 		temp[0] = input[*i];
 		temp[1] = '\0';
-		*new_input = ft_strjoin_free(*new_input, temp, 1);
-	}	
+		new_input = ft_strjoin_free(new_input, temp, 1);
+	}
+	return (new_input);
 }
 
-char    *substitute_dollar(t_env_var *head, char *input)
+char	*substitute_dollar(t_env_var *head, char *input)
 {
 	int		i;
-    char	*new_input;
+	char	*new_input;
 	int		quotes[2];
 
 	i = -1;
@@ -98,7 +102,8 @@ char    *substitute_dollar(t_env_var *head, char *input)
 			quotes[0] = !quotes[0];
 		else if (input[i] == '\"' && quotes[0] == 0)
 			quotes[1] = !quotes[1];
-		fill_new_input(head, &new_input, input, &i, quotes);
+		new_input = ft_strjoin_free(new_input, \
+		fill_new_input(head, input, &i, quotes), 3);
 	}
 	if (quotes[0] == 1 || quotes[1] == 1)
 	{
@@ -106,42 +111,30 @@ char    *substitute_dollar(t_env_var *head, char *input)
 		new_input = ft_strdup("echo Error: unmatched quotes");
 	}
 	free(input);
-    return (new_input);
+	return (new_input);
 }
 
-void set_env_var(t_env_var *head, char *name, char *value) 
+void	set_env_var(t_env_var *head, char *name, char *value)
 {
-    t_env_var   *new;
+	t_env_var	*new;
 
-    if (head->name == NULL)
-    {
-        head->name = ft_strdup(name);
-        head->value = ft_strdup(value);
-        return;
-    }
-    while (head->next != NULL)
-    {
-        if (ft_strcmp(head->name, name) == 0)
-        {
-            free(head->value);
-            head->value = ft_strdup(value);
-            return;
-        }
-        head = head->next;
-    }
-    if (ft_strcmp(head->name, name) == 0)
-        {
-            free(head->value);
-            head->value = ft_strdup(value);
-            return;
-        }
-    new = malloc(sizeof(t_env_var));
-    if (new == NULL) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-    new->name = ft_strdup(name);
-    new->value = ft_strdup(value);
-    new->next = NULL;
-    head->next = new;
+	if (head->name == NULL)
+	{
+		head->name = ft_strdup(name);
+		head->value = ft_strdup(value);
+		return ;
+	}
+	while (head->next != NULL && ft_strcmp(head->name, name))
+		head = head->next;
+	if (!ft_strcmp(head->name, name))
+	{
+		free(head->value);
+		head->value = ft_strdup(value);
+		return ;
+	}
+	new = safe_malloc(sizeof(t_env_var));
+	new->name = ft_strdup(name);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	head->next = new;
 }

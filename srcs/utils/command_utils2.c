@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 20:10:10 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:54:23 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*deep_clean_input(char *input)
 	if (temp)
 	{
 		free(new_input);
-		new_input = ft_strjoin_free("minishell:syntax error near unexpected token `", temp, 2);
+		new_input = ft_strjoin_free(SYNTAX_ERROR, temp, 2);
 		ft_putstr_fd(new_input, STDERR_FILENO);
 		free(new_input);
 		return (NULL);

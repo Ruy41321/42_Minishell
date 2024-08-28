@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 17:41:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 17:54:34 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:52:43 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ char	*trim_edges(char *input, char ch)
 	while (end > start && *end == ch)
 		end--;
 	*(end + 1) = '\0';
-	input = ft_strdup(start);
-	free(start);
-	return (input);
+	start = ft_strdup(start);
+	free(input);
+	return (start);
 }
 
 char	*clean_input(char *input, char ch)

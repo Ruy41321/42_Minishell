@@ -1,6 +1,10 @@
 --------------------------------------------------------------------------------------------------------------
 Da Fare:
 
+*. Luigi
+	finire di norminettare (redirection.c, executing.c)
+	inseririre il controllo degli apici alle redirect, alle pipe e rimuoverle prima di mandare il comando
+
 4. Implementazione dei Built-in (come in bash):
    - echo con l'opzione -n
    - cd utilizzando solo un percorso relativo o assoluto

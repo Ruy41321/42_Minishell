@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:45:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/21 13:04:09 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:15:00 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,33 @@ int	ft_strlen(const char *str)
 	int	len;
 
 	len = 0;
-	if (str == NULL)
+	if (!str)
 		return (0);
 	while (str[len])
+		len++;
+	return (len);
+}
+
+int	ft_arrlen(char **array)
+{
+	int	len;
+
+	len = 0;
+	if (!array )
+		return (0);
+	while (array[len])
+		len++;
+	return (len);
+}
+
+int	ft_arrlen_tillstr(char **array, const char *str)
+{
+	int	len;
+
+	len = 0;
+	if (!array)
+		return (0);
+	while (array[len] && ft_strcmp(array[len], str))
 		len++;
 	return (len);
 }

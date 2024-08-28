@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:54:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 16:45:36 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:15:16 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,44 +30,59 @@ int	is_prepipe_command(char **command)
 	return (0);
 }
 
-char ***get_piped_command(char **command)
+int	count_pipes(char **command)
 {
-    int i, j, k, count;
-    char ***piped_command;
+	int	i;
+	int	count;
 
-    count = 1;
-    for (i = 0; command[i] != NULL; i++)
-    {
-        if (ft_strncmp(command[i], "|", 2) == 0)
-            count++;
-    }
+	i = 0;
+	count = 1;
+	while (command[i] != NULL)
+	{
+		if (ft_strncmp(command[i], "|", 2) == 0)
+			count++;
+		i++;
+	}
+	return (count);
+}
 
-    piped_command = (char ***)malloc((count + 1) * sizeof(char **));
-    if (!piped_command)
-        return NULL;
+void	split_commands(char ***piped_command, char **command)
+{
+	int	j;
+	int	k;
+	int	t;
+	int	l;
 
-    // Itera attraverso l'array di comandi e separa i comandi in base al carattere pipe
-    j = 0;
-    k = 0;
-    piped_command[j] = (char **)malloc((i + 1) * sizeof(char *));
-    if (!piped_command[j])
-        return NULL;
+	j = 0;
+	k = 0;
+	t = -1;
+	l = ft_arrlen_tillstr(command, "|") + 1;
+	piped_command[j] = (char **)safe_malloc((l + 1) * sizeof(char *));
+	while (command[++t] != NULL)
+	{
+		piped_command[j][k++] = ft_strdup(command[t]);
+		if (ft_strncmp(command[t], "|", 2) == 0)
+		{
+			piped_command[j++][k] = NULL;
+			k = 0;
+			command += t + 1;
+			t = -1;
+			l = ft_arrlen_tillstr(command, "|") + 1;
+			piped_command[j] = (char **)safe_malloc((l + 1) * sizeof(char *));
+		}
+	}
+	piped_command[j][k] = NULL;
+	piped_command[j + 1] = NULL;
+}
 
-    for (int t = 0; command[t] != NULL; t++)
-    {
-        piped_command[j][k++] = ft_strdup(command[t]);
-        if (ft_strncmp(command[t], "|", 2) == 0)
-        {
-            piped_command[j][k] = NULL;
-            j++;
-            k = 0;
-            piped_command[j] = (char **)malloc((i + 1) * sizeof(char *));
-            if (!piped_command[j])
-                return NULL;
-        }
-    }
-    piped_command[j][k] = NULL;
-    piped_command[j + 1] = NULL;
+char	***get_piped_command(char **command)
+{
+	int		count;
+	char	***piped_command;
+
+	count = count_pipes(command);
+	piped_command = (char ***)safe_malloc((count + 1) * sizeof(char **));
+	split_commands(piped_command, command);
 	free_command(command, -1);
-    return piped_command;
+	return (piped_command);
 }
