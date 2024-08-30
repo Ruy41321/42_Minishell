@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 14:32:30 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:51:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
 	char	*new_input;
 
 	new_input = ft_strdup("");
-	if (input[*i] == '$' && input[*i + 1] != '\0' && quotes[0] == 0)
+	if (input[*i] == '$' && input[*i + 1] != '\0' && \
+	quotes[0] == 0 && (ft_isalnum(input[*i + 1]) || input[*i + 1] == '?'))
 	{
 		if (input[*i + 1] == '?')
 		{
@@ -86,7 +87,7 @@ char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
 	return (new_input);
 }
 
-char	*substitute_dollar(t_env_var *head, char *input)
+char	*substitute_dollars(t_env_var *head, char *input)
 {
 	int		i;
 	char	*new_input;

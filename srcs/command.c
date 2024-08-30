@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 17:58:59 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:45:29 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	parse_and_exec(t_env_var *head, char *input, char **envp)
 	i = -1;
 	while (separated_inputs[++i] != NULL)
 	{
-		new_input = substitute_dollar(head, separated_inputs[i]);
+		new_input = substitute_dollars(head, separated_inputs[i]);
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		execute_command(head, command, envp);

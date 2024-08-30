@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 17:41:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 15:02:16 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:44:49 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,21 @@ char	*remove_quotes(char *input)
 	int		j;
 	int		len;
 	char	*temp;
+	int		quotes[2];
 
 	i = -1;
 	j = 0;
 	len = strlen(input);
 	temp = safe_malloc(len + 1);
+	quotes[0] = 0;
+	quotes[1] = 0;
 	while (++i < len)
 	{
-		if (input[i] != '\'' && input[i] != '"')
+		if (input[i] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (input[i] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else
 			temp[j++] = input[i];
 	}
 	temp[j] = '\0';
@@ -51,14 +58,18 @@ char	*remove_consecutive_chars(char *input, char ch)
 	int		j;
 	int		len;
 	char	*temp;
+	int		quotes[2];
 
 	i = -1;
 	j = 0;
 	len = strlen(input);
 	temp = safe_malloc(len + 1);
+	quotes[0] = 0;
+	quotes[1] = 0;
 	while (++i < len)
 	{
-		if (!(input[i] == ch && input[i + 1] == ch))
+		quotes_check(input, quotes, quotes + 1, &i);
+		if (!(input[i] == ch && input[i + 1] == ch) || quotes[0] || quotes[1])
 			temp[j++] = input[i];
 	}
 	temp[j] = '\0';

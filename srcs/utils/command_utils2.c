@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 12:45:16 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:40:20 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 char	*are_consecutives(char *input)
 {
 	int	i;
+	int	quotes[2];
 
 	i = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	while (input[i] != '\0')
 	{
-		if (input[i] == ';' || input[i] == '|' || \
-		input[i] == '<' || input[i] == '>')
+		quotes_check(input, quotes, quotes + 1, &i);
+		if ((input[i] == ';' || input[i] == '|' || \
+		input[i] == '<' || input[i] == '>') && !quotes[0] && !quotes[1])
 		{
 			i++;
 			while (input[i] == ' ')
@@ -41,13 +45,17 @@ char	*get_spaced_input(char *input, int len, int new_len)
 	int		j;
 	char	*result;
 	int		i;
+	int		quotes[2];
 
 	j = 0;
 	i = -1;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	result = safe_malloc(new_len + 1);
 	while (++i < len)
 	{
-		if (input[i] == '|')
+		quotes_check(input, quotes, quotes + 1, &i);
+		if (input[i] == '|' && !quotes[0] && !quotes[1])
 		{
 			result[j++] = ' ';
 			result[j++] = '|';
@@ -67,15 +75,22 @@ char	*pipe_syntax(char *input)
 	int		new_len;
 	char	*result;
 	int		i;
+	int		quotes[2];
 
 	len = ft_strlen(input);
 	new_len = len;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	if (input[0] == '|' || input[ft_strlen(input) - 1] == '|')
 		return (NULL);
 	i = -1;
 	while (++i < len)
 	{
-		if (input[i] == '|')
+		if (input[i] == '\'' && !quotes[1])
+			quotes[0] = !quotes[0];
+		else if (input[i] == '"' && !quotes[0])
+			quotes[1] = !quotes[1];
+		else if (input[i] == '|' && !quotes[0] && !quotes[1])
 			new_len += 2;
 	}
 	result = get_spaced_input(input, len, new_len);
@@ -110,4 +125,3 @@ char	*deep_clean_input(char *input)
 	}
 	return (new_input);
 }
-// prova ad eseguire dovrebbe andare , da controllare <> e | con le apici

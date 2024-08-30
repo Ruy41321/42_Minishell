@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 14:56:01 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:45:43 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	signal_init(void);
 int		execute_command(t_env_var *head, char **command, char **envp);
 char	*get_input(char **envp);
 int		len(char **array);
-char	*substitute_dollar(t_env_var *head, char *input);
+char	*substitute_dollars(t_env_var *head, char *input);
 void	set_env_var(t_env_var *head, char *name, char *value);
 void	parse_and_exec(t_env_var *head, char *input, char **envp);
 char	*get_env_var(char **envp, const char *var_name);
@@ -62,6 +62,7 @@ void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int stdOut);
 int		handle_env_var_assignment(t_env_var *head, char **piped_command);
 char	*remove_quotes(char *input);
 void	remove_quotes_2d(char **command);
+void	quotes_check(char *input, int *quotes, int *dquotes, int *i);
 
 # define SYNTAX_ERROR "minishell:syntax error near unexpected token `"
 #endif

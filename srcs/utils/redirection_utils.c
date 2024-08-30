@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 23:52:34 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:42:09 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,31 +73,44 @@ int	redirect_output(char *file, int flags)
 	return (0);
 }
 
+char	*redirect_error(char *input, int i, int len)
+{
+	if (i == len - 1 || input[i + 1] == '\n')
+		return (ft_strdup("newline`\n"));
+	else if (input[i] == '<')
+	{
+		if (is_redirect_char(input[i + 1]))
+			return (ft_strdup("<`\n"));
+	}
+	else if (input[i] == '>')
+	{
+		if ((input[i + 1] == '>' && is_redirect_char(input[i + 2])) \
+		|| input[i + 1] == '<')
+			return (ft_strdup(">`\n"));
+	}
+	return (NULL);
+}
+
 char	*syntax_error(char *input)
 {
-	int	len;
-	int	i;
+	int		len;
+	int		i;
+	int		quotes[2];
+	char	*error;
 
-	i = 0;
+	i = -1;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	len = strlen(input);
-	while (i < len)
+	while (++i < len)
 	{
-		if (input[i] == '<' || input[i] == '>')
+		quotes_check(input, quotes, quotes + 1, &i);
+		if ((input[i] == '<' || input[i] == '>') && !quotes[0] && !quotes[1])
 		{
-			if (i == len - 1 || input[i + 1] == '\n')
-				return (ft_strdup("newline`\n"));
-			if (input[i] == '<')
-				if (is_redirect_char(input[i + 1]))
-					return (ft_strdup("<`\n"));
-			if (input[i] == '>')
-			{
-				if (input[i + 1] == '>' && is_redirect_char(input[i + 2]))
-					return (ft_strdup(">`\n"));
-				if (input[i + 1] == '<')
-					return (ft_strdup(">`\n"));
-			}
+			error = redirect_error(input, i, len);
+			if (error)
+				return (error);
 		}
-		i++;
 	}
 	return (NULL);
 }

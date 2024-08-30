@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 14:53:43 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 18:25:00 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ long long	parent_process(char ***cmd_ptr, char **command, pid_t ch, int *fd)
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(ch, &child_status, WUNTRACED);
+	g_exit_status = child_status >> 8;
 	if (WTERMSIG(child_status))
 	{
 		g_exit_status = child_status >> 8;
@@ -57,9 +58,8 @@ long long	parent_process(char ***cmd_ptr, char **command, pid_t ch, int *fd)
 			command++;
 		}
 		free(cmd_ptr);
-		return (g_exit_status);
 	}
-	return (0);
+	return (g_exit_status);
 }
 
 long long	handle_exe(char ***cmd_ptr, char **command, char **envp, int *fd)

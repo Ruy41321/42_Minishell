@@ -1,10 +1,6 @@
 DA FARE:
 
 *. Luigi
-	#. Non rimuovere gli apici quando sono all iterno di altri apici
-	#. Non contare gli errori di sintassi di < > | ; $ all interno degli apici
-	#. Gestire il dollare seguito da spazio
-	#. Se il dollaro non e' seguito da un carattere alfabetico non sostituirlo
 	1. Non usare più di una variabile globale:
 		Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
 

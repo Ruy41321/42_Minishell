@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:19:20 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 17:17:54 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:38:53 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,12 @@ void	*safe_malloc(size_t size)
 		exit(1);
 	}
 	return (ret);
+}
+
+void	quotes_check(char *input, int *quotes, int *dquotes, int *i)
+{
+	if (input[*i] == '\'' && !*dquotes)
+		*quotes = !*quotes;
+	else if (input[*i] == '"' && !*quotes)
+		*dquotes = !*dquotes;
 }
