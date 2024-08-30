@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 18:25:00 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 18:28:57 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ long long	parent_process(char ***cmd_ptr, char **command, pid_t ch, int *fd)
 		}
 		free(cmd_ptr);
 	}
-	return (g_exit_status);
+	return (0);
 }
 
 long long	handle_exe(char ***cmd_ptr, char **command, char **envp, int *fd)
