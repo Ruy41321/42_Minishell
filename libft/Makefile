@@ -10,10 +10,11 @@ SRCS = ft_isdigit.c ft_memset.c ft_strjoin.c ft_strtrim.c ft_isprint.c \
 		ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_strcpy.c\
 		ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c ft_atol.c \
 
-OBJS = ${SRCS:.c=.o}
+OBJDIR = objs
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
 CC		= gcc
-RM		= rm -f
+RM		= rm -rf
 
 CFLAGS = -Wall -Wextra -Werror -g
 
@@ -22,7 +23,12 @@ all:	${NAME}
 $(NAME):	${OBJS}
 			ar rcs ${NAME} ${OBJS}
 			
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(OBJDIR)
+	${CC} ${CFLAGS} -c $< -o $@
+
 clean:
+		${RM} ${OBJDIR}
 		${RM} ${OBJS}
 
 fclean:	clean

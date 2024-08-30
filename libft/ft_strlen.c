@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:45:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 23:15:00 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:00:40 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_arrlen(char **array)
 	int	len;
 
 	len = 0;
-	if (!array )
+	if (!array)
 		return (0);
 	while (array[len])
 		len++;

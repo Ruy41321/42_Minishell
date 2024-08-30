@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 19:14:33 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:12:45 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ char	*get_value_from_env(t_env_var *head, char *value)
 {
 	while (head != NULL)
 	{
-		if (ft_strcmp(head->name, value) == 0)
-			return (head->value);
+		if (head->name != NULL)
+			if (ft_strcmp(head->name, value) == 0)
+				return (head->value);
 		head = head->next;
 	}
 	return (NULL);

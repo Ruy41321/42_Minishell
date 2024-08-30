@@ -1,0 +1,2 @@
+ls srcs
+echo ciao from the file

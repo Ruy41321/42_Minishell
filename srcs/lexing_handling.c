@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 23:28:49 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:32:30 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,25 +116,28 @@ char	*substitute_dollar(t_env_var *head, char *input)
 
 void	set_env_var(t_env_var *head, char *name, char *value)
 {
-	t_env_var	*new;
-
+	value = remove_quotes(value);
 	if (head->name == NULL)
 	{
 		head->name = ft_strdup(name);
 		head->value = ft_strdup(value);
-		return ;
 	}
-	while (head->next != NULL && ft_strcmp(head->name, name))
-		head = head->next;
-	if (!ft_strcmp(head->name, name))
+	else
 	{
-		free(head->value);
-		head->value = ft_strdup(value);
-		return ;
+		while (head->next != NULL && ft_strcmp(head->name, name))
+			head = head->next;
+		if (!ft_strcmp(head->name, name))
+		{
+			free(head->value);
+			head->value = ft_strdup(value);
+		}
+		else
+		{
+			head->next = safe_malloc(sizeof(t_env_var));
+			head->next->name = ft_strdup(name);
+			head->next->value = ft_strdup(value);
+			head->next->next = NULL;
+		}
 	}
-	new = safe_malloc(sizeof(t_env_var));
-	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	head->next = new;
+	free(value);
 }

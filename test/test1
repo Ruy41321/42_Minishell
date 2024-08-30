@@ -1,0 +1,63 @@
+/bin/ls
+/bin/ls -l
+/bin/ls -la
+/bin/ls -l -a
+echo -----------------------------
+/bin/echo ciao
+/bin/echo ciao bella
+/bin/echo -n ciao
+/bin/echo 
+/bin/echo -n
+echo ------------------------------
+/bin/ls
+echo $?
+/bin/ls sadgha
+echo $?
+/bin/echo ciao
+echo $?
+asfhkj
+expr $? + $?
+echo $?
+echo ------------------------------
+echo "cat lol.c | cat > lol.c"
+"echo ciao"
+echo "echo ciao" bello
+echo "ciao
+echo ciao "
+echo ------------------------------
+echo 'cat lol.c | cat > lol.c'
+'echo ciao'
+echo 'echo ciao' bello
+echo 'ciao
+echo ciao '
+echo '$USER'
+echo 'ciao < > | ; $ff "; $ff" '
+echo ------------------------------
+env
+echo ------------------------------
+../../../../bin/ls
+echo ------------------------------
+ls
+awk
+echo ------------------------------
+echo ls srcs> test/ciao.txt
+echo "echo ciao from the file" >> test/ciao.txt
+./minishell < test/ciao.txt
+wc < test/ciao.txt
+echo ------------------------------
+cat test/ciao.txt | wc
+ls | grep c | wc
+cat < test/ciao.txt | grep ciao > test/ciao2.txt
+echo ------------------------------
+echo $HOME
+CIAO=123
+echo $CIAO
+ABC=funzia ; echo $ABC
+echo $USER
+USER=io
+echo $USER
+echo "$HOME $CIAO"
+echo '$HOME $CIAO'
+echo ------------------------------
+
+

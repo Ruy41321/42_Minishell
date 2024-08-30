@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 21:54:23 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:45:16 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ char	*pipe_syntax(char *input)
 	char	*result;
 	int		i;
 
-	len = strlen(input);
+	len = ft_strlen(input);
 	new_len = len;
-	if (input[0] == '|' || input[strlen(input) - 1] == '|')
+	if (input[0] == '|' || input[ft_strlen(input) - 1] == '|')
 		return (NULL);
 	i = -1;
 	while (++i < len)

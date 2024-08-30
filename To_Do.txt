@@ -1,29 +1,30 @@
---------------------------------------------------------------------------------------------------------------
-Da Fare:
+DA FARE:
 
 *. Luigi
-	finire di norminettare (redirection.c, executing.c)
-	inseririre il controllo degli apici alle redirect, alle pipe e rimuoverle prima di mandare il comando
+	#. Non rimuovere gli apici quando sono all iterno di altri apici
+	#. Non contare gli errori di sintassi di < > | ; $ all interno degli apici
+	#. Gestire il dollare seguito da spazio
+	#. Se il dollaro non e' seguito da un carattere alfabetico non sostituirlo
+	1. Non usare più di una variabile globale:
+		Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
 
-4. Implementazione dei Built-in (come in bash):
-   - echo con l'opzione -n
-   - cd utilizzando solo un percorso relativo o assoluto
-   - pwd senza opzioni
-   - export senza opzioni
-   - unset senza opzioni
-   - env senza opzioni e argomenti
-   - exit senza opzioni
+*. Federico
+	4. Implementazione dei Built-in (come in bash):
+	- echo con l'opzione -n
+	- cd utilizzando solo un percorso relativo o assoluto
+	- pwd senza opzioni
+	- export senza opzioni
+	- unset senza opzioni
+	- env senza opzioni e argomenti
+	- exit senza opzioni
+
+#. Norminettata finale
 
 =======================================================================================================
---------------------------------------------------------------------------------------------------------------
-Da vedere infine:
+=======================================================================================================
+=======================================================================================================
 
-1. Non usare più di una variabile globale:
-  Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
-
-   
---------------------------------------------------------------------------------------------------------------
-Gia fatto:
+GIA FATTO:
 
 7. Navigazione nella Cronologia dei Comandi:
    - Navigazione:
