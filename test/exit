@@ -1,0 +1,110 @@
+/bin/echo ciao bella
+echo $? > exit_value.txt
+/bin/echo -n ciao
+echo $? >> exit_value.txt
+/bin/echo 
+echo $? >> exit_value.txt
+/bin/echo -n
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+/bin/ls
+echo $? >> exit_value.txt
+echo $?
+echo $? >> exit_value.txt
+/bin/ls sadgha
+echo $? >> exit_value.txt
+echo $?
+echo $? >> exit_value.txt
+/bin/echo ciao
+echo $? >> exit_value.txt
+echo $?
+echo $? >> exit_value.txt
+asfhkj
+echo $? >> exit_value.txt
+expr $? + $?
+echo $? >> exit_value.txt
+echo $?
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+echo "cat lol.c | cat > lol.c"
+echo $? >> exit_value.txt
+"echo ciao"
+echo $? >> exit_value.txt
+echo "echo ciao" bello
+echo $? >> exit_value.txt
+echo "ciao
+echo $? >> exit_value.txt
+echo ciao "
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+echo 'cat lol.c | cat > lol.c'
+echo $? >> exit_value.txt
+'echo ciao'
+echo $? >> exit_value.txt
+echo 'echo ciao' bello
+echo $? >> exit_value.txt
+echo 'ciao
+echo $? >> exit_value.txt
+echo ciao '
+echo $? >> exit_value.txt
+echo '$USER'
+echo $? >> exit_value.txt
+echo 'ciao < > | ; $ff "; $ff" '
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+env
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+../../../../bin/ls
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+ls
+echo $? >> exit_value.txt
+awk
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+echo ls srcs> test/ciao.txt
+echo $? >> exit_value.txt
+echo "echo ciao from the file" >> test/ciao.txt
+echo $? >> exit_value.txt
+./minishell < test/ciao.txt
+echo $? >> exit_value.txt
+wc < test/ciao.txt
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+cat test/ciao.txt | wc
+echo $? >> exit_value.txt
+ls | grep c | wc
+echo $? >> exit_value.txt
+cat < test/ciao.txt | grep ciao > test/ciao2.txt
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt
+echo $HOME
+echo $? >> exit_value.txt
+CIAO=123
+echo $? >> exit_value.txt
+echo $CIAO
+echo $? >> exit_value.txt
+ABC=funzia ; echo $ABC
+echo $? >> exit_value.txt
+echo $USER
+echo $? >> exit_value.txt
+USER=io
+echo $? >> exit_value.txt
+echo $USER
+echo $? >> exit_value.txt
+echo "$HOME $CIAO"
+echo $? >> exit_value.txt
+echo '$HOME $CIAO'
+echo $? >> exit_value.txt
+echo ------------------------------
+echo $? >> exit_value.txt

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 18:28:57 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/31 13:08:48 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	child_process(char **piped_command, char **envp)
 {
 	char	*full_path;
 
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, signal_handler_child);
 	piped_command = handle_redirection(piped_command);
 	if (!piped_command)
-		exit(0);
+		exit(1);
 	remove_quotes_2d(piped_command);
 	full_path = get_full_path(piped_command[0], envp);
 	if (!full_path)
@@ -30,39 +30,41 @@ void	child_process(char **piped_command, char **envp)
 		ft_putstr_fd(full_path, 2);
 		free(full_path);
 		free_command(piped_command, -1);
-		exit(1);
+		exit(127);
 	}
 	if (execve(full_path, piped_command, envp) == -1)
 	{
 		perror(piped_command[0]);
 		free_command(piped_command, -1);
 		free(full_path);
-		exit(1);
+		exit(2);
 	}
 }
 
-long long	parent_process(char ***cmd_ptr, char **command, pid_t ch, int *fd)
+int	parent_process(pid_t ch, int *fd)
 {
 	int	child_status;
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(ch, &child_status, WUNTRACED);
-	g_exit_status = child_status >> 8;
-	if (WTERMSIG(child_status))
+	handle_stdfd(fd);
+	if (WIFEXITED(child_status))
+		g_exit_status = WEXITSTATUS(child_status);
+	else if (WIFSIGNALED(child_status))
 	{
+		g_exit_status = 128 + WTERMSIG(child_status);
+		ft_printf("\n");
+		return (1);
+	}
+	else
+	{
+		ft_printf("Debug:: questo caso non dovrebbe mai accadere\n");
 		g_exit_status = child_status >> 8;
-		handle_stdfd(fd);
-		while (command != NULL)
-		{
-			free_command(command, -1);
-			command++;
-		}
-		free(cmd_ptr);
 	}
 	return (0);
 }
 
-long long	handle_exe(char ***cmd_ptr, char **command, char **envp, int *fd)
+int	handle_exe(char **command, char **envp, int *fd)
 {
 	pid_t	child;
 
@@ -75,8 +77,8 @@ long long	handle_exe(char ***cmd_ptr, char **command, char **envp, int *fd)
 	if (child == 0)
 		child_process(command, envp);
 	else
-		if (parent_process(cmd_ptr, command, child, fd))
-			return (g_exit_status);
+		if (parent_process(child, fd))
+			return (1);
 	return (0);
 }
 
@@ -96,12 +98,15 @@ int	execute_command(t_env_var *head, char **command, char **envp)
 	{
 		handle_pipe(*piped_command, pipefd, &is_prepipe, origin_std[1]);
 		if (!handle_env_var_assignment(head, *piped_command))
-			if (handle_exe(piped_command_ptr, *piped_command, envp, origin_std))
-				return (g_exit_status);
-		free_command(*piped_command, -1);
-		piped_command++;
+		{
+			if (handle_exe(*piped_command, envp, origin_std))
+			{
+				free_command_3d(piped_command);
+				return (free(piped_command_ptr), 1);
+			}
+		}
+		free_command(*(piped_command++), -1);
 	}
 	handle_stdfd(origin_std);
-	free(piped_command_ptr);
-	return (0);
+	return (free(piped_command_ptr), 0);
 }

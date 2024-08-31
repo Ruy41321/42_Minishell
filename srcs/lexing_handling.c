@@ -6,13 +6,11 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 17:51:38 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/31 13:10:23 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern long long	g_exit_status;
 
 char	**get_separeted_inputs(char *input)
 {

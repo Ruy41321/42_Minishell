@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 17:45:29 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/31 12:55:48 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,22 @@ void	parse_and_exec(t_env_var *head, char *input, char **envp)
 	int		i;
 
 	if (only_spaces(input))
-	{
-		free(input);
-		return ;
-	}
+		return (free(input));
 	new_input = deep_clean_input(input);
 	if (!new_input)
 		return ;
 	separated_inputs = get_separeted_inputs(new_input);
 	free(new_input);
-	i = -1;
-	while (separated_inputs[++i] != NULL)
+	i = 0;
+	while (separated_inputs[i] != NULL)
 	{
-		new_input = substitute_dollars(head, separated_inputs[i]);
+		new_input = substitute_dollars(head, separated_inputs[i++]);
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
-		execute_command(head, command, envp);
 		free(input);
+		if (execute_command(head, command, envp))
+			while (separated_inputs[i] != NULL)
+				free(separated_inputs[i++]);
 	}
 	free(separated_inputs);
 }

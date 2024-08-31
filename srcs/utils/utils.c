@@ -6,13 +6,11 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:19:20 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 17:38:53 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/08/31 13:12:41 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern long long	g_exit_status;
 
 int	only_spaces(char *input)
 {
@@ -23,18 +21,6 @@ int	only_spaces(char *input)
 		input++;
 	}
 	return (1);
-}
-
-int	len(char **array)
-{
-	int	count;
-
-	count = 0;
-	while (array[count] != NULL)
-	{
-		count++;
-	}
-	return (count);
 }
 
 void	free_command(char **command, int len)
@@ -59,6 +45,18 @@ void	free_command(char **command, int len)
 		i++;
 	}
 	free(command);
+}
+
+void	free_command_3d(char ***command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i] != NULL)
+	{
+		free_command(command[i], -1);
+		i++;
+	}
 }
 
 void	*safe_malloc(size_t size)
