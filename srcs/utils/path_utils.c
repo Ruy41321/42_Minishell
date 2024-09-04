@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:01:24 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/28 19:01:51 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:13:24 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_var(char **envp, const char *var_name)
+char	*get_env_var(t_env_var *env, const char *var_name)
 {
-	int	len;
-	int	i;
+	t_env_var	*tmp;
 
-	i = -1;
-	len = ft_strlen(var_name);
-	while (envp[++i] != NULL)
+	tmp = env;
+	while (tmp != NULL)
 	{
-		if (ft_strncmp(envp[i], var_name, len) == 0 && envp[i][len] == '=')
-			return (envp[i] + len + 1);
+		if (ft_strncmp(tmp->name, var_name, ft_strlen(var_name)) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

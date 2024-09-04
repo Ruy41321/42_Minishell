@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 12:55:48 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:17:45 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ void	parse_and_exec(t_env_var *head, char *input, char **envp)
 	free(separated_inputs);
 }
 
-char	*get_pwd(char **envp)
+char	*get_pwd(t_env_var *env)
 {
 	char	*pwd;
 	char	*home;
 	char	*new_pwd;
 
-	pwd = get_env_var(envp, "PWD");
-	home = get_env_var(envp, "HOME");
+	pwd = get_env_var(env, "PWD");
+	home = get_env_var(env, "HOME");
 	if (home && pwd && strncmp(pwd, home, strlen(home)) == 0)
 	{
 		new_pwd = malloc(strlen(pwd) - strlen(home) + 2);
@@ -90,7 +90,7 @@ char	*get_pwd(char **envp)
 	return (pwd);
 }
 
-char	*get_colored_prompt(char **envp)
+char	*get_colored_prompt(t_env_var *env)
 {
 	char	*pwd;
 	char	*user;
@@ -98,8 +98,8 @@ char	*get_colored_prompt(char **envp)
 	char	*temp2;
 	char	*prompt;
 
-	pwd = get_pwd(envp);
-	user = get_env_var(envp, "USER");
+	pwd = get_pwd(env);
+	user = get_env_var(env, "USER");
 	temp = ft_strjoin(user, "@");
 	prompt = ft_strjoin("\033[1;33m", temp);
 	free(temp);
@@ -119,12 +119,12 @@ char	*get_colored_prompt(char **envp)
 	return (temp2);
 }
 
-char	*get_input(char **envp)
+char	*get_input(t_env_var *env)
 {
 	char	*input;
 	char	*prompt;
 
-	prompt = get_colored_prompt(envp);
+	prompt = get_colored_prompt(env);
 	input = readline(prompt);
 	if (input == NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 13:07:42 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:16:40 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <linux/limits.h>
 
 typedef struct s_env_var
 {
@@ -33,11 +34,11 @@ typedef struct s_env_var
 
 void	signal_init(void);
 int		execute_command(t_env_var *head, char **command, char **envp);
-char	*get_input(char **envp);
+char	*get_input(t_env_var *env);
 char	*substitute_dollars(t_env_var *head, char *input);
 void	set_env_var(t_env_var *head, char *name, char *value);
 void	parse_and_exec(t_env_var *head, char *input, char **envp);
-char	*get_env_var(char **envp, const char *var_name);
+char	*get_env_var(t_env_var *env, const char *var_name);
 char	*get_full_path(char *command, char **envp);
 void	free_command(char **command, int len);
 void	free_command_3d(char ***command);
@@ -50,7 +51,7 @@ void	init_separeted(char ***separated, int *quotes, int *c, char *input);
 char	*clean_input(char *input, char ch);
 int		only_spaces(char *input);
 char	**handle_redirection(char **command);
-char	redirect_syntax(char *input);
+char	*redirect_syntax(char *input);
 char	***get_piped_command(char **command);
 int		is_prepipe_command(char **command);
 char	*deep_clean_input(char *input);

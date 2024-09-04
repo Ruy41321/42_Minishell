@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 12:45:32 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:50:48 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,58 @@ void	free_head(t_env_var *head)
 	free(head);
 }
 
-t_env_var	*get_head(void)
+void	increase_shlvl(t_env_var *head)
+{
+	char	*shlvl;
+	int		lvl;
+
+	shlvl = get_env_var(head, "SHLVL");
+	if (shlvl == NULL)
+	{
+		set_env_var(head, "SHLVL", "1");
+		return ;
+	}
+	lvl = ft_atoi(shlvl);
+	lvl++;
+	shlvl = ft_itoa(lvl);
+	set_env_var(head, "SHLVL", shlvl);
+	free(shlvl);
+}
+
+char	*get_env_name(char *envp)
+{
+	char	*name;
+	int		i;
+
+	i = 0;
+	while (envp[i] != '=')
+		i++;
+	name = safe_malloc(i + 1);
+	ft_strlcpy(name, envp, i + 1);
+	return (name);
+}
+
+t_env_var	*init_head(char **envp)
 {
 	t_env_var	*head;
+	t_env_var	*tmp;
+	int			i;
 
 	head = safe_malloc(sizeof(t_env_var));
-	head->name = NULL;
-	head->value = NULL;
+	head->name = get_env_name(envp[0]);
+	head->value = ft_strdup(getenv(head->name));
 	head->next = NULL;
+	tmp = head;
+	i = 1;
+	while (envp[i] != NULL)
+	{
+		tmp->next = safe_malloc(sizeof(t_env_var));
+		tmp = tmp->next;
+		tmp->name = get_env_name(envp[i]);
+		tmp->value = ft_strdup(getenv(tmp->name));
+		tmp->next = NULL;
+		i++;
+	}
 	return (head);
 }
 
@@ -55,11 +99,12 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("Error: too many arguments\n", 2);
 		return (1);
 	}
-	head = get_head();
+	head = init_head(envp);
+	increase_shlvl(head);
 	while (1)
 	{
 		signal_init();
-		input = get_input(envp);
+		input = get_input(head);
 		if (!input)
 			break ;
 		parse_and_exec(head, input, envp);
