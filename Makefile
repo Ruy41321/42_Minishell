@@ -21,7 +21,7 @@ norm:
 	norminette $(SRCS) includes libft
 
 valgrind: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=no ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=no --trace-children=yes ./$(NAME)
 
 test: all
 	./minishell

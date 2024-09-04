@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 16:35:58 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:29:01 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**list_to_matrix(t_env_var *head)
 	while (tmp != NULL)
 	{
 		envp[i] = ft_strjoin(tmp->name, "=");
-		envp[i] = ft_strjoin(envp[i], tmp->value);
+		envp[i] = ft_strjoin_free(envp[i], tmp->value, 1);
 		i++;
 		tmp = tmp->next;
 	}
