@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 13:08:48 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:11:23 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern long long	g_exit_status;
 
-void	child_process(char **piped_command, char **envp)
+void	child_process(char **piped_command, t_env_var *env)
 {
 	char	*full_path;
 
@@ -23,7 +23,7 @@ void	child_process(char **piped_command, char **envp)
 	if (!piped_command)
 		exit(1);
 	remove_quotes_2d(piped_command);
-	full_path = get_full_path(piped_command[0], envp);
+	full_path = get_full_path(piped_command[0], env);
 	if (!full_path)
 	{
 		full_path = ft_strjoin(piped_command[0], ": command not found\n");
@@ -32,7 +32,7 @@ void	child_process(char **piped_command, char **envp)
 		free_command(piped_command, -1);
 		exit(127);
 	}
-	if (execve(full_path, piped_command, envp) == -1)
+	if (execve(full_path, piped_command, list_to_matrix(env)) == -1)
 	{
 		perror(piped_command[0]);
 		free_command(piped_command, -1);
@@ -64,7 +64,7 @@ int	parent_process(pid_t ch, int *fd)
 	return (0);
 }
 
-int	handle_exe(char **command, char **envp, int *fd)
+int	handle_exe(char **command, t_env_var *env, int *fd)
 {
 	pid_t	child;
 
@@ -75,14 +75,14 @@ int	handle_exe(char **command, char **envp, int *fd)
 		exit(1);
 	}
 	if (child == 0)
-		child_process(command, envp);
+		child_process(command, env);
 	else
 		if (parent_process(child, fd))
 			return (1);
 	return (0);
 }
 
-int	execute_command(t_env_var *head, char **command, char **envp)
+int	execute_command(t_env_var *head, char **command)
 {
 	char	***piped_command;
 	char	***piped_command_ptr;
@@ -99,7 +99,7 @@ int	execute_command(t_env_var *head, char **command, char **envp)
 		handle_pipe(*piped_command, pipefd, &is_prepipe, origin_std[1]);
 		if (!handle_env_var_assignment(head, *piped_command))
 		{
-			if (handle_exe(*piped_command, envp, origin_std))
+			if (handle_exe(*piped_command, head, origin_std))
 			{
 				free_command_3d(piped_command);
 				return (free(piped_command_ptr), 1);

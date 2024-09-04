@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:01:24 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 15:13:24 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:12:09 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*look_for_file(char *command, char **path_tokens)
 	return (NULL);
 }
 
-char	*get_full_path(char *command, char **envp)
+char	*get_full_path(char *command, t_env_var *env)
 {
 	char	*ret;
 	char	*path;
@@ -62,7 +62,7 @@ char	*get_full_path(char *command, char **envp)
 	if (is_path(command))
 		return (ft_strdup(command));
 	ret = NULL;
-	path = get_env_var(envp, "PATH");
+	path = get_env_var(env, "PATH");
 	if (!path)
 		return (NULL);
 	path = ft_strdup(path);

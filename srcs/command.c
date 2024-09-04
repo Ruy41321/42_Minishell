@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 15:17:45 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:58:37 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**get_list_command(char *input)
 	return (command);
 }
 
-void	parse_and_exec(t_env_var *head, char *input, char **envp)
+void	parse_and_exec(t_env_var *head, char *input)
 {
 	char	**separated_inputs;
 	char	**command;
@@ -62,7 +62,7 @@ void	parse_and_exec(t_env_var *head, char *input, char **envp)
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		free(input);
-		if (execute_command(head, command, envp))
+		if (execute_command(head, command))
 			while (separated_inputs[i] != NULL)
 				free(separated_inputs[i++]);
 	}

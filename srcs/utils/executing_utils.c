@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 14:58:06 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:35:58 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,31 @@ int	handle_env_var_assignment(t_env_var *head, char **piped_command)
 		return (1);
 	}
 	return (0);
+}
+
+char	**list_to_matrix(t_env_var *head)
+{
+	char		**envp;
+	int			i;
+	t_env_var	*tmp;
+
+	i = 0;
+	tmp = head;
+	while (tmp != NULL)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	envp = safe_malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	tmp = head;
+	while (tmp != NULL)
+	{
+		envp[i] = ft_strjoin(tmp->name, "=");
+		envp[i] = ft_strjoin(envp[i], tmp->value);
+		i++;
+		tmp = tmp->next;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

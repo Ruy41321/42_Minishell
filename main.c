@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 15:50:48 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:07:56 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 		input = get_input(head);
 		if (!input)
 			break ;
-		parse_and_exec(head, input, envp);
+		parse_and_exec(head, input);
 	}
 	free_head(head);
 	ft_printf("exit\n");

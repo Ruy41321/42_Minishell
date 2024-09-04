@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 15:16:40 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:12:24 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ typedef struct s_env_var
 }	t_env_var;
 
 void	signal_init(void);
-int		execute_command(t_env_var *head, char **command, char **envp);
+int		execute_command(t_env_var *head, char **command);
+char	**list_to_matrix(t_env_var *head);
 char	*get_input(t_env_var *env);
 char	*substitute_dollars(t_env_var *head, char *input);
 void	set_env_var(t_env_var *head, char *name, char *value);
-void	parse_and_exec(t_env_var *head, char *input, char **envp);
+void	parse_and_exec(t_env_var *head, char *input);
 char	*get_env_var(t_env_var *env, const char *var_name);
-char	*get_full_path(char *command, char **envp);
+char	*get_full_path(char *command, t_env_var *env);
 void	free_command(char **command, int len);
 void	free_command_3d(char ***command);
 char	*get_local_var(t_env_var *head, char *name, char *temp);
