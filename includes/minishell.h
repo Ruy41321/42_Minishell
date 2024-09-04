@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 16:12:24 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:29:35 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,25 @@ typedef struct s_env_var
 	struct s_env_var	*next;
 }	t_env_var;
 
+typedef struct s_my_envp
+{
+	t_env_var	*locals;
+	t_env_var	*exported;
+}	t_my_envp;
+
 void	signal_init(void);
-int		execute_command(t_env_var *head, char **command);
+int		execute_command(t_my_envp *my_envp, char **command);
 char	**list_to_matrix(t_env_var *head);
-char	*get_input(t_env_var *env);
-char	*substitute_dollars(t_env_var *head, char *input);
-void	set_env_var(t_env_var *head, char *name, char *value);
-void	parse_and_exec(t_env_var *head, char *input);
-char	*get_env_var(t_env_var *env, const char *var_name);
+char	*get_input(t_my_envp *my_envp);
+char	*substitute_dollars(t_my_envp *my_envp, char *input);
+int		set_env_var(t_env_var *head, char *name, char *value, int create);
+int		export_builtin(t_my_envp *my_envp, char **command);
+void	parse_and_exec(t_my_envp *my_envp, char *input);
+char	*get_env_var(t_env_var *env, char *var_name);
 char	*get_full_path(char *command, t_env_var *env);
 void	free_command(char **command, int len);
 void	free_command_3d(char ***command);
-char	*get_local_var(t_env_var *head, char *name, char *temp);
+char	*get_local_var(t_my_envp *my_envp, char *name, char *temp);
 char	*get_exit_status(void);
 char	**get_separeted_inputs(char *input);
 void	*safe_malloc(size_t size);
@@ -61,7 +68,7 @@ int		redirect_input(char *file);
 int		redirect_output(char *file, int flags);
 void	handle_stdfd(int *fd);
 void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int stdOut);
-int		handle_env_var_assignment(t_env_var *head, char **piped_command);
+int		handle_env_var_assignment(t_my_envp *my_envp, char **piped_command);
 char	*remove_quotes(char *input);
 void	remove_quotes_2d(char **command);
 void	quotes_check(char *input, int *quotes, int *dquotes, int *i);

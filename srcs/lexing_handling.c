@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 13:10:23 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:29:45 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ char	**get_separeted_inputs(char *input)
 	return (separated_inputs);
 }
 
-void	handle_expansion(char *input, int *i, char **new_input, t_env_var *head)
+void	handle_expansion(char *input, int *i, char **new_input, t_my_envp *env)
 {
 	char	*delim;
 
 	delim = get_delim(input + *i + 1);
 	*new_input = ft_strjoin_free(*new_input, \
-	get_local_var(head, input + *i + 1, delim), 1);
+	get_local_var(env, input + *i + 1, delim), 1);
 	if (delim != NULL)
 		(*i) += (int)(delim - (input + *i + 1));
 	else
@@ -59,7 +59,7 @@ void	handle_expansion(char *input, int *i, char **new_input, t_env_var *head)
  * quotes[0] : single quotes flag
  * quotes[1] : double quotes flag
  */
-char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
+char	*fill_new_input(t_my_envp *my_envp, char *input, int *i, int *quotes)
 {
 	char	temp[2];
 	char	*new_input;
@@ -74,7 +74,7 @@ char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
 			(*i)++;
 		}
 		else
-			handle_expansion(input, i, &new_input, head);
+			handle_expansion(input, i, &new_input, my_envp);
 	}
 	else
 	{
@@ -85,7 +85,7 @@ char	*fill_new_input(t_env_var *head, char *input, int *i, int *quotes)
 	return (new_input);
 }
 
-char	*substitute_dollars(t_env_var *head, char *input)
+char	*substitute_dollars(t_my_envp *my_envp, char *input)
 {
 	int		i;
 	char	*new_input;
@@ -102,7 +102,7 @@ char	*substitute_dollars(t_env_var *head, char *input)
 		else if (input[i] == '\"' && quotes[0] == 0)
 			quotes[1] = !quotes[1];
 		new_input = ft_strjoin_free(new_input, \
-		fill_new_input(head, input, &i, quotes), 3);
+		fill_new_input(my_envp, input, &i, quotes), 3);
 	}
 	if (quotes[0] == 1 || quotes[1] == 1)
 	{
@@ -113,7 +113,7 @@ char	*substitute_dollars(t_env_var *head, char *input)
 	return (new_input);
 }
 
-void	set_env_var(t_env_var *head, char *name, char *value)
+int	set_env_var(t_env_var *head, char *name, char *value, int create)
 {
 	value = remove_quotes(value);
 	if (head->name == NULL)
@@ -129,8 +129,9 @@ void	set_env_var(t_env_var *head, char *name, char *value)
 		{
 			free(head->value);
 			head->value = ft_strdup(value);
+			return (free(value), 1);
 		}
-		else
+		else if (create)
 		{
 			head->next = safe_malloc(sizeof(t_env_var));
 			head->next->name = ft_strdup(name);
@@ -138,5 +139,5 @@ void	set_env_var(t_env_var *head, char *name, char *value)
 			head->next->next = NULL;
 		}
 	}
-	free(value);
+	return (free(value), 0);
 }

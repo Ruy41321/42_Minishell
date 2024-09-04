@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 15:58:37 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 20:29:40 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**get_list_command(char *input)
 	return (command);
 }
 
-void	parse_and_exec(t_env_var *head, char *input)
+void	parse_and_exec(t_my_envp *my_envp, char *input)
 {
 	char	**separated_inputs;
 	char	**command;
@@ -58,11 +58,11 @@ void	parse_and_exec(t_env_var *head, char *input)
 	i = 0;
 	while (separated_inputs[i] != NULL)
 	{
-		new_input = substitute_dollars(head, separated_inputs[i++]);
+		new_input = substitute_dollars(my_envp, separated_inputs[i++]);
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		free(input);
-		if (execute_command(head, command))
+		if (execute_command(my_envp, command))
 			while (separated_inputs[i] != NULL)
 				free(separated_inputs[i++]);
 	}
@@ -119,12 +119,12 @@ char	*get_colored_prompt(t_env_var *env)
 	return (temp2);
 }
 
-char	*get_input(t_env_var *env)
+char	*get_input(t_my_envp *env)
 {
 	char	*input;
 	char	*prompt;
 
-	prompt = get_colored_prompt(env);
+	prompt = get_colored_prompt(env->exported);
 	input = readline(prompt);
 	if (input == NULL)
 	{

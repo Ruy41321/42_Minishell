@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 17:29:01 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:22:48 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int std_out)
 	}
 }
 
-int	handle_env_var_assignment(t_env_var *head, char **piped_command)
+int	handle_env_var_assignment(t_my_envp *my_envp, char **piped_command)
 {
 	char	*equals_sign;
 	char	*value;
@@ -58,13 +58,14 @@ int	handle_env_var_assignment(t_env_var *head, char **piped_command)
 	{
 		*equals_sign = '\0';
 		name = *piped_command;
-		if (ft_strchr(*piped_command, '"') || ft_strchr(*piped_command, '\''))
+		if (get_delim(name))
 		{
 			*equals_sign = '=';
 			return (0);
 		}
 		value = equals_sign + 1;
-		set_env_var(head, name, value);
+		if (!set_env_var(my_envp->exported, name, value, 0))
+			set_env_var(my_envp->locals, name, value, 1);
 		return (1);
 	}
 	return (0);

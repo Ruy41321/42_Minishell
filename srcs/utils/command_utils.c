@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 14:12:45 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:43:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,7 @@ char	*get_exit_status(void)
 	return (exit_status);
 }
 
-char	*get_value_from_env(t_env_var *head, char *value)
-{
-	while (head != NULL)
-	{
-		if (head->name != NULL)
-			if (ft_strcmp(head->name, value) == 0)
-				return (head->value);
-		head = head->next;
-	}
-	return (NULL);
-}
-
-char	*get_local_var(t_env_var *head, char *name, char *end)
+char	*get_local_var(t_my_envp *my_envp, char *name, char *end)
 {
 	char	*value;
 	char	*result;
@@ -69,9 +57,9 @@ char	*get_local_var(t_env_var *head, char *name, char *end)
 		value = name;
 	else
 		value = ft_substr(name, 0, end - name);
-	result = get_value_from_env(head, value);
+	result = get_env_var(my_envp->exported, value);
 	if (result == NULL)
-		result = getenv(value);
+		result = get_env_var(my_envp->locals, value);
 	if (end != NULL)
 		free(value);
 	return (result);
