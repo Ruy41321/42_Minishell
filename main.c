@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 22:16:50 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:05:32 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char	*get_env_name(char *envp)
 t_env_var	*get_head(void)
 {
 	t_env_var	*head;
+
 	head = safe_malloc(sizeof(t_env_var));
 	head->name = ft_strdup("!head");
 	head->value = ft_strdup("0");
@@ -125,7 +126,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ft_putstr_fd("Error: too many arguments\n", 2);
 		return (1);
-	} 
+	}
 	my_envp = init_envp(envp);
 	increase_shlvl(my_envp->exported);
 	while (1)

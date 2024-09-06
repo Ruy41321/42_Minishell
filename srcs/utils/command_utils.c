@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 21:43:38 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:06:54 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern long long	g_exit_status;
 
 char	*get_delim(char *input)
 {

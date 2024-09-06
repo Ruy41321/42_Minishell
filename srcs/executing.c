@@ -6,13 +6,11 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/06 02:58:37 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:06:43 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern long long	g_exit_status;
 
 int	exe_bultin(t_my_envp *my_envp, char **command)
 {

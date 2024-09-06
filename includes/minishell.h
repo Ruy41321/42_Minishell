@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/06 02:57:25 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:06:34 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_my_envp
 	t_env_var	*locals;
 	t_env_var	*exported;
 }	t_my_envp;
+
+extern long long	g_exit_status;
 
 void	signal_init(void);
 int		execute_command(t_my_envp *my_envp, char **command);

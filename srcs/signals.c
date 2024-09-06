@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:16:45 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 14:14:49 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/06 03:06:50 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern long long	g_exit_status;
 
 void	signal_handler_child(int sig)
 {
