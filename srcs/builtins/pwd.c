@@ -6,13 +6,13 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:43 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/04 16:33:37 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/06 02:53:47 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd(void)
+int	pwd_builtin(void)
 {
 	char	cwd[PATH_MAX];
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 22:29:35 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/06 02:57:25 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*get_input(t_my_envp *my_envp);
 char	*substitute_dollars(t_my_envp *my_envp, char *input);
 int		set_env_var(t_env_var *head, char *name, char *value, int create);
 int		export_builtin(t_my_envp *my_envp, char **command);
+int		pwd_builtin(void);
+void	env_builtin(t_env_var *env);
 void	parse_and_exec(t_my_envp *my_envp, char *input);
 char	*get_env_var(t_env_var *env, char *var_name);
 char	*get_full_path(char *command, t_env_var *env);

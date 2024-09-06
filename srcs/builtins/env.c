@@ -6,13 +6,13 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:31 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/03 20:43:54 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/06 02:55:57 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_env_var *env)
+void	env_builtin(t_env_var *env)
 {
 	t_env_var	*head;
 
