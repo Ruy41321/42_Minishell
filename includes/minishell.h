@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/07 19:17:25 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 01:42:59 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,14 @@ int		pwd_builtin(void);
 void	env_builtin(t_env_var *env);
 int		cd_builtin(t_my_envp *my_envp, char **command);
 int		echo_builtin(char **command);
+int		unset_builtin(t_my_envp *my_envp, char **command);
+int		exit_builtin(t_my_envp *my_envp, char **command);
 void	parse_and_exec(t_my_envp *my_envp, char *input);
 char	*get_env_var(t_env_var *env, char *var_name);
 char	*get_full_path(char *command, t_env_var *env);
 void	free_command(char **command, int len);
 void	free_command_3d(char ***command);
+void	free_my_envp(t_my_envp *my_envp);
 char	*get_local_var(t_my_envp *my_envp, char *name, char *temp);
 char	*get_exit_status(void);
 char	**get_separeted_inputs(char *input);
