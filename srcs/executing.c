@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/06 03:06:43 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/07 19:08:23 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	exe_bultin(t_my_envp *my_envp, char **command)
 {
-	// if (ft_strcmp(command[0], "cd") == 0)
-	// 	return (cd_builtin(my_envp, command), 1);
-	// if (ft_strcmp(command[0], "echo") == 0)
-	// 	return (echo_builtin(command), 1);
+	if (ft_strcmp(command[0], "cd") == 0)
+		return (cd_builtin(my_envp, command), 1);
+	if (ft_strcmp(command[0], "echo") == 0)
+		return (echo_builtin(command), 1);
 	if (ft_strcmp(command[0], "env") == 0)
 		return (env_builtin(my_envp->exported), 1);
 	// if (ft_strcmp(command[0], "exit") == 0)
