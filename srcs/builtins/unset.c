@@ -6,13 +6,13 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:46 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 01:25:02 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 01:55:27 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_env_var(t_env_var **head, char *name)
+static void	remove_env_var(t_env_var **head, char *name)
 {
 	t_env_var	*temp;
 	t_env_var	*prev;

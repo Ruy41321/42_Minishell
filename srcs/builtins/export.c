@@ -6,13 +6,13 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/06 02:37:08 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 02:15:07 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_export(t_env_var *head)
+static void	print_export(t_env_var *head)
 {
 	while (head != NULL)
 	{
@@ -27,7 +27,7 @@ void	print_export(t_env_var *head)
 	}
 }
 
-int	delete_local_var(t_env_var *head, char *name)
+static int	delete_local_var(t_env_var *head, char *name)
 {
 	t_env_var	*tmp;
 	t_env_var	*prev;
@@ -53,6 +53,18 @@ int	delete_local_var(t_env_var *head, char *name)
 	return (1);
 }
 
+static void	export_existing(t_my_envp *my_envp, char *name)
+{
+	char	*value;
+
+	value = get_env_var(my_envp->locals, name);
+	if (value)
+	{
+		set_env_var(my_envp->exported, name, value, 1);
+		delete_local_var(my_envp->locals, name);
+	}
+}
+
 int	export_builtin(t_my_envp *my_envp, char **command)
 {
 	char	*equals_sign;
@@ -63,16 +75,7 @@ int	export_builtin(t_my_envp *my_envp, char **command)
 		return (print_export(my_envp->exported), 0);
 	equals_sign = ft_strchr(command[1], '=');
 	if (equals_sign == NULL)
-	{
-		name = command[1];
-		value = get_env_var(my_envp->locals, name);
-		if (value)
-		{
-			set_env_var(my_envp->exported, name, value, 1);
-			delete_local_var(my_envp->locals, name);
-		}
-		return (0);
-	}
+		return (export_existing(my_envp, command[1]), 0);
 	*equals_sign = '\0';
 	name = command[1];
 	if (get_delim(name))

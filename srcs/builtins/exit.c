@@ -6,13 +6,13 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:35 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 01:49:36 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 01:55:53 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isnumber(char *str)
+static int	ft_isnumber(char *str)
 {
 	int	i;
 
@@ -28,7 +28,7 @@ int	ft_isnumber(char *str)
 	return (1);
 }
 
-void	safe_exit(t_my_envp *my_envp, char **command)
+static void	safe_exit(t_my_envp *my_envp, char **command)
 {
 	free_command(command, -1);
 	free_my_envp(my_envp);
