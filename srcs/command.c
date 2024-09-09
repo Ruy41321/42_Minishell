@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 20:29:40 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:32:41 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,12 @@ char	*get_pwd(t_env_var *env)
 {
 	char	*pwd;
 	char	*home;
-	char	*new_pwd;
 
 	pwd = get_env_var(env, "PWD");
 	home = get_env_var(env, "HOME");
-	if (home && pwd && strncmp(pwd, home, strlen(home)) == 0)
-	{
-		new_pwd = malloc(strlen(pwd) - strlen(home) + 2);
-		if (new_pwd)
-		{
-			new_pwd[0] = '~';
-			strcpy(new_pwd + 1, pwd + strlen(home));
-			return (new_pwd);
-		}
-	}
-	return (pwd);
+	if (home && pwd && ft_strncmp(pwd, home, ft_strlen(home)) == 0)
+		return (ft_strjoin_free("~", ft_strcpy(pwd + ft_strlen(home)), 2));
+	return (ft_strdup(pwd));
 }
 
 char	*get_colored_prompt(t_env_var *env)

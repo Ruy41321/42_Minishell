@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:19:20 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 13:12:41 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:56:04 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	free_command_3d(char ***command)
 		free_command(command[i], -1);
 		i++;
 	}
+	free(command);
 }
 
 void	*safe_malloc(size_t size)

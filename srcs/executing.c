@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 01:41:18 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:59:11 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	child_process(char **piped_command, t_my_envp *envp)
 	char	*full_path;
 
 	signal(SIGINT, signal_handler_child);
-	piped_command = handle_redirection(piped_command);
 	if (!piped_command)
 		exit(1);
 	remove_quotes_2d(piped_command);
@@ -64,7 +63,6 @@ int	parent_process(pid_t ch, int *fd)
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(ch, &child_status, WUNTRACED);
-	handle_stdfd(fd);
 	if (WIFEXITED(child_status))
 		g_exit_status = WEXITSTATUS(child_status);
 	else if (WIFSIGNALED(child_status))
@@ -81,11 +79,8 @@ int	parent_process(pid_t ch, int *fd)
 	return (0);
 }
 
-int	handle_exe(char **command, t_my_envp *my_envp, int *fd)
+int	handle_exe(pid_t child, char **command, t_my_envp *my_envp, int *fd)
 {
-	pid_t	child;
-
-	child = fork();
 	if (child < 0)
 	{
 		perror("Fork failed");
@@ -93,9 +88,6 @@ int	handle_exe(char **command, t_my_envp *my_envp, int *fd)
 	}
 	if (child == 0)
 		child_process(command, my_envp);
-	else
-		if (parent_process(child, fd))
-			return (1);
 	return (0);
 }
 
@@ -106,27 +98,37 @@ int	execute_command(t_my_envp *my_envp, char **command)
 	int		origin_std[2];
 	int		pipefd[2];
 	int		is_prepipe;
+	int		i;
+	pid_t	*child;
 
 	handle_stdfd(origin_std);
 	piped_command = get_piped_command(command);
 	piped_command_ptr = piped_command;
+	child = safe_malloc(sizeof(pid_t) * (ft_3d_arrlen(piped_command) + 1));
 	is_prepipe = 0;
+	i = -1;
 	while (*piped_command != NULL)
 	{
+		
 		handle_pipe(*piped_command, pipefd, &is_prepipe, origin_std[1]);
-		if (!handle_env_var_assignment(my_envp, *piped_command))
+		child[++i] = fork();
+		if (child[i] == 0)
 		{
-			if (!exe_bultin(my_envp, *piped_command))
+			if (!handle_env_var_assignment(my_envp, *piped_command))
 			{
-				if (handle_exe(*piped_command, my_envp, origin_std))
-				{
-					free_command_3d(piped_command);
-					return (free(piped_command_ptr), 1);
-				}
+				*piped_command = handle_redirection(*piped_command);
+				if (!exe_bultin(my_envp, *piped_command))
+					handle_exe(child[i], *piped_command, my_envp, origin_std);
 			}
+			exit(0);
 		}
 		free_command(*(piped_command++), -1);
 	}
+	child[++i] = 0;
+	i = -1;
+	while (child[++i])
+		parent_process(child[i], origin_std);
 	handle_stdfd(origin_std);
+	free(child);
 	return (free(piped_command_ptr), 0);
 }

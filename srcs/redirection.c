@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:53:07 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 15:02:28 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:20:30 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	handle_single_redirection(char **command, int *i, int *c)
 	int	len;
 	int	ret;
 
-	len = strlen(command[*i]);
+	len = ft_strlen(command[*i]);
 	ret = 0;
 	if (ft_strncmp(command[*i], "<", len) == 0)
 		ret = redirect_input(command[*i + 1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 01:42:59 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:45:28 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*get_delim(char *input);
 void	init_separeted(char ***separated, int *quotes, int *c, char *input);
 char	*clean_input(char *input, char ch);
 int		only_spaces(char *input);
-char	**handle_redirection(char **command);
+char    **handle_redirection(char **command);
 char	*redirect_syntax(char *input);
 char	***get_piped_command(char **command);
 int		is_prepipe_command(char **command);
@@ -82,6 +82,9 @@ char	*remove_quotes(char *input);
 void	remove_quotes_2d(char **command);
 void	quotes_check(char *input, int *quotes, int *dquotes, int *i);
 void	signal_handler_child(int sig);
+void	free_my_envp(t_my_envp *my_envp);
+void	increase_shlvl(t_env_var *head);
+char	*get_env_name(char *envp);
 
 # define SYNTAX_ERROR "minishell:syntax error near unexpected token `"
 #endif

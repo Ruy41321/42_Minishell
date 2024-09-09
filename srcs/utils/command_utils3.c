@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 17:41:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 17:44:49 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:16:50 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*remove_quotes(char *input)
 
 	i = -1;
 	j = 0;
-	len = strlen(input);
+	len = ft_strlen(input);
 	temp = safe_malloc(len + 1);
 	quotes[0] = 0;
 	quotes[1] = 0;
@@ -62,7 +62,7 @@ char	*remove_consecutive_chars(char *input, char ch)
 
 	i = -1;
 	j = 0;
-	len = strlen(input);
+	len = ft_strlen(input);
 	temp = safe_malloc(len + 1);
 	quotes[0] = 0;
 	quotes[1] = 0;
@@ -84,7 +84,7 @@ char	*trim_edges(char *input, char ch)
 	start = input;
 	while (*start == ch)
 		start++;
-	end = input + strlen(input) - 1;
+	end = input + ft_strlen(input) - 1;
 	while (end > start && *end == ch)
 		end--;
 	*(end + 1) = '\0';
@@ -100,7 +100,7 @@ char	*clean_input(char *input, char ch)
 
 	if (ch == ';')
 	{
-		if (input[strlen(input) - 1] == ';')
+		if (input[ft_strlen(input) - 1] == ';')
 			input[ft_strlen(input) - 1] = '\0';
 		temp = remove_consecutive_chars(input, ch);
 		result = trim_edges(temp, ch);

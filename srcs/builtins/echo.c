@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:27 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 02:03:26 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:17:02 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int	echo_builtin(char **command)
 		i++;
 	}
 	if (!n_flag)
-		ft_putstr_fd("\n", 1);
+		ft_putchar_fd('\n', 1);
 	return (0);
 }

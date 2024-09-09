@@ -4,7 +4,7 @@ LIBFT = ./libft/libft.a
 FLAGS = -Wall -Wextra  -Iincludes -I./libft -g -fsanitize=address
 SRCS = main.c srcs/signals.c srcs/command.c srcs/executing.c srcs/utils/utils.c srcs/lexing_handling.c \
 		srcs/utils/command_utils.c srcs/utils/command_utils2.c srcs/redirection.c srcs/pipe.c srcs/utils/path_utils.c \
-		srcs/utils/command_utils3.c srcs/utils/redirection_utils.c srcs/utils/executing_utils.c \
+		srcs/utils/command_utils3.c srcs/utils/redirection_utils.c srcs/utils/executing_utils.c srcs/utils/envp_utils.c\
 		srcs/builtins/cd.c srcs/builtins/echo.c srcs/builtins/env.c srcs/builtins/exit.c srcs/builtins/export.c \
 		srcs/builtins/pwd.c srcs/builtins/unset.c
 OBJS = $(SRCS:.c=.o)

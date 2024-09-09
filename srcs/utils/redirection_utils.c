@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/30 17:42:09 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:17:12 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*syntax_error(char *input)
 	i = -1;
 	quotes[0] = 0;
 	quotes[1] = 0;
-	len = strlen(input);
+	len = ft_strlen(input);
 	while (++i < len)
 	{
 		quotes_check(input, quotes, quotes + 1, &i);
