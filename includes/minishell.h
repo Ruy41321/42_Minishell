@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 16:45:28 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:43:26 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*get_delim(char *input);
 void	init_separeted(char ***separated, int *quotes, int *c, char *input);
 char	*clean_input(char *input, char ch);
 int		only_spaces(char *input);
-char    **handle_redirection(char **command);
+char	**handle_redirection(char **command);
 char	*redirect_syntax(char *input);
 char	***get_piped_command(char **command);
 int		is_prepipe_command(char **command);
@@ -76,7 +76,7 @@ char	*syntax_error(char *input);
 int		redirect_input(char *file);
 int		redirect_output(char *file, int flags);
 void	handle_stdfd(int *fd);
-void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int stdOut);
+int		handle_pipe(char **piped_command, int *p_fd, int *is_prep);
 int		handle_env_var_assignment(t_my_envp *my_envp, char **piped_command);
 char	*remove_quotes(char *input);
 void	remove_quotes_2d(char **command);

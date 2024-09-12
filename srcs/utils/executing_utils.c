@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 17:55:20 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:43:17 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,10 @@ void	handle_stdfd(int *fd)
 	}
 }
 
-void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int std_out)
+int	handle_pipe(char **piped_command, int *p_fd, int *is_prep)
 {
 	if (*is_prep)
-	{
-		dup2(p_fd[0], STDIN_FILENO);
-		dup2(std_out, STDOUT_FILENO);
-	}
-	close(p_fd[0]);
+		return (1);
 	*is_prep = is_prepipe_command(piped_command);
 	if (*is_prep)
 	{
@@ -42,9 +38,9 @@ void	handle_pipe(char **piped_command, int *p_fd, int *is_prep, int std_out)
 			perror("Pipe failed");
 			exit(1);
 		}
-		dup2(p_fd[1], STDOUT_FILENO);
-		close(p_fd[1]);
+		return (1);
 	}
+	return (0);
 }
 
 int	handle_env_var_assignment(t_my_envp *my_envp, char **piped_command)
