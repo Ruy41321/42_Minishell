@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 12:43:26 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:21:37 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_my_envp
 extern long long	g_exit_status;
 
 void	signal_init(void);
-int		execute_command(t_my_envp *my_envp, char **command);
+int		execute_handler(t_my_envp *my_envp, char **command);
 char	**list_to_matrix(t_env_var *head);
 char	*get_input(t_my_envp *my_envp);
 char	*substitute_dollars(t_my_envp *my_envp, char *input);

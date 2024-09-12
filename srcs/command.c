@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 16:32:41 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:21:58 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	parse_and_exec(t_my_envp *my_envp, char *input)
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		free(input);
-		if (execute_command(my_envp, command))
+		if (execute_handler(my_envp, command))
 			while (separated_inputs[i] != NULL)
 				free(separated_inputs[i++]);
 	}

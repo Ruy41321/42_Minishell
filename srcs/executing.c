@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 12:57:14 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:37:24 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	exe_bultin(t_my_envp *my_envp, char **command)
 {
+	if (handle_env_var_assignment(my_envp, command))
+		return (1);
 	if (ft_strcmp(command[0], "cd") == 0)
 		return (cd_builtin(my_envp, command), 1);
 	if (ft_strcmp(command[0], "echo") == 0)
@@ -57,7 +59,7 @@ void	child_process(char **piped_command, t_my_envp *envp)
 	}
 }
 
-int	parent_process(pid_t ch, int *fd)
+int	parent_process(pid_t ch)
 {
 	int	child_status;
 
@@ -80,7 +82,7 @@ int	parent_process(pid_t ch, int *fd)
 	return (0);
 }
 
-int	handle_exe(char **command, t_my_envp *my_envp, int *fd)
+int	handle_exe(char **command, t_my_envp *my_envp)
 {
 	pid_t	child;
 
@@ -92,7 +94,16 @@ int	handle_exe(char **command, t_my_envp *my_envp, int *fd)
 	}
 	if (child == 0)
 		child_process(command, my_envp);
-	return(parent_process(child, fd));
+	return(parent_process(child));
+}
+
+void	execute_child(t_my_envp *my_envp, char ***command)
+{
+	*command = handle_redirection(*command);
+	if (!exe_bultin(my_envp, *command))
+		child_process(*command, my_envp);
+	free_command(*command, -1);
+	exit(0);
 }
 
 int	execute_pipe(t_my_envp *my_envp, char ***pipe_command)
@@ -100,62 +111,78 @@ int	execute_pipe(t_my_envp *my_envp, char ***pipe_command)
 	int		origin_std[2];
 	int		pipefd[2];
 	int 	is_prepipe;
-	int 	is_postpipe;
 	int		i;
 	pid_t	*child;
 
-	i = 0;
 	is_prepipe = 0;
-	is_postpipe = 0;
 	handle_stdfd(origin_std);
-	if (!handle_pipe(pipe_command[i], pipefd, &is_prepipe))
+	if (!handle_pipe(pipe_command[0], pipefd, &is_prepipe))
 		return (0);
 	child = safe_malloc(sizeof(pid_t) * (ft_3d_arrlen(pipe_command) + 1));
-	while (pipe_command[i] != NULL)
+	i = -1;
+	while (pipe_command[++i] != NULL)
 	{
-		if (!handle_env_var_assignment(my_envp, pipe_command[i]))
+		child[i] = fork();
+		if (child[i] == 0)
 		{
-			pipe_command[i] = handle_redirection(pipe_command[i]);
-			child[i] = fork();
-			if (child[i] == 0)
-			{
-				if (is_postpipe)
-				{
-					dup2(pipefd[0], STDIN_FILENO);
-					dup2(origin_std[1], STDOUT_FILENO);
-					close(pipefd[0]);
-					close(pipefd[1]);
-				}
-				else if (is_prepipe)
-				{
-					dup2(pipefd[1], STDOUT_FILENO);
-					close(pipefd[0]);
-					close(pipefd[1]);
-				}
-				if (!exe_bultin(my_envp, pipe_command[i]))
-					child_process(pipe_command[i], my_envp);
-				exit(0);
-			}
-			if (is_postpipe)
-				is_postpipe = 0;
-			else if (is_prepipe)
-			{
-				is_prepipe = 0;
-				is_postpipe = 1;
-			}
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[0]);
+			close(pipefd[1]);
+			execute_child(my_envp, pipe_command + i);
 		}
-		free_command((pipe_command[i++]), -1);
+		free_command(pipe_command[i], -1);
+		child[++i] = fork();
+		if (child[i] == 0)
+		{
+			dup2(pipefd[0], STDIN_FILENO);
+			close(pipefd[0]);
+			close(pipefd[1]);
+			execute_child(my_envp, pipe_command + i);
+		}
+		close(pipefd[0]);
+		close(pipefd[1]);
+		free_command(pipe_command[i], -1);
 	}
 	child[i] = 0;
 	i = -1;
 	while (child[++i])
-		parent_process(child[i], origin_std);
+		parent_process(child[i]);
 	handle_stdfd(origin_std);
 	free(child);
 	return (1);
 }
 
-int	execute_command(t_my_envp *my_envp, char **command)
+// if (ft_3d_arrlen(pipe_command) == 1)
+// 		return (0);
+// 	child = safe_malloc(sizeof(pid_t) * (ft_3d_arrlen(pipe_command) + 1));
+// 	i = -1;
+// 	is_prepipe = handle_pipe(pipe_command[0], pipefd, &is_prepipe);
+// 	while (pipe_command[++i] != NULL)
+// 	{
+// 		if (is_postpipe)
+// 		{
+// 			dup2(pipefd[0], STDIN_FILENO);
+// 			close(pipefd[0]);
+// 			dup2(origin_std[1], STDOUT_FILENO);
+// 			is_postpipe = 0;
+// 		}
+// 		if (is_prepipe)
+// 		{
+// 			dup2(pipefd[1], STDOUT_FILENO);
+// 			close(pipefd[1]);
+// 			is_postpipe = 1;
+// 			is_prepipe = 0;
+// 		}
+// 		is_prepipe = handle_pipe(pipe_command[i], pipefd, &is_prepipe);
+// 		child[i] = fork();
+// 		if (child[i] == 0)
+// 		{
+// 			execute_child(my_envp, pipe_command + i);
+// 		}
+// 		free_command(pipe_command[i], -1);
+// 	}
+
+int	execute_handler(t_my_envp *my_envp, char **command)
 {
 	char	***piped_command;
 	int		origin_std[2];
@@ -164,15 +191,11 @@ int	execute_command(t_my_envp *my_envp, char **command)
 	piped_command = get_piped_command(command);
 	if (!execute_pipe(my_envp, piped_command))
 	{
-		if (!handle_env_var_assignment(my_envp, piped_command[0]))
-		{
-			piped_command[0] = handle_redirection(piped_command[0]);
-			if (!exe_bultin(my_envp, piped_command[0]))
-				handle_exe(piped_command[0], my_envp, origin_std);
-		}
-		free_command((piped_command[0]), -1);
+		*piped_command = handle_redirection(*piped_command);
+		if (!exe_bultin(my_envp, *piped_command))
+			handle_exe(*piped_command, my_envp);
+		free_command(*piped_command, -1);
 	}
 	handle_stdfd(origin_std);
 	return (free(piped_command), 0);
 }
-
