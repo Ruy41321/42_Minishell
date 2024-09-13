@@ -6,23 +6,24 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 12:26:04 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:07:48 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_stdfd(int *fd)
+void	handle_stdfd(int **fd)
 {
-	if (!fd[0] || !fd[1])
+	if (!*fd)
 	{
-		fd[0] = dup(STDIN_FILENO);
-		fd[1] = dup(STDOUT_FILENO);
+		*fd = safe_malloc(sizeof(int) * 2);
+		(*fd)[0] = dup(STDIN_FILENO);
+		(*fd)[1] = dup(STDOUT_FILENO);
 	}
 	else
 	{
-		dup2(fd[0], STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
+		dup2((*fd)[0], STDIN_FILENO);
+		dup2((*fd)[1], STDOUT_FILENO);
 	}
 }
 

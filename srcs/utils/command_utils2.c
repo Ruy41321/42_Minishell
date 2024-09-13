@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/08/31 12:53:52 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 12:50:23 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*pipe_syntax(char *input)
 	quotes[0] = 0;
 	quotes[1] = 0;
 	if (input[0] == '|' || input[ft_strlen(input) - 1] == '|')
-		return (NULL);
+		return (free(input), NULL);
 	i = -1;
 	while (++i < len)
 	{
@@ -95,6 +95,12 @@ char	*pipe_syntax(char *input)
 	}
 	result = get_spaced_input(input, len, new_len);
 	return (result);
+}
+
+void	print_syntax_error(char *input)
+{
+	ft_putstr_fd(SYNTAX_ERROR, STDERR_FILENO);
+	ft_putstr_fd(input, STDERR_FILENO);
 }
 
 char	*deep_clean_input(char *input)
@@ -113,15 +119,13 @@ char	*deep_clean_input(char *input)
 		return (NULL);
 	new_input = pipe_syntax(new_input);
 	if (!new_input)
-		return (NULL);
+		return (print_syntax_error("|`\n"), NULL);
 	temp = are_consecutives(new_input);
 	if (temp)
 	{
 		free(new_input);
-		new_input = ft_strjoin_free(SYNTAX_ERROR, temp, 2);
-		ft_putstr_fd(new_input, STDERR_FILENO);
-		free(new_input);
-		return (NULL);
+		print_syntax_error(temp);
+		return (free(temp), NULL);
 	}
 	return (new_input);
 }

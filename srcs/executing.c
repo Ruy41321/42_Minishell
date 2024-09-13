@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 12:25:47 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:58:37 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,30 +76,46 @@ int	handle_exe(char **command, t_my_envp *my_envp)
 	return (parent_process(child));
 }
 
+int	run_pipe(t_my_envp *my_envp, char ***piped_command)
+{
+	pid_t	*child;
+	int		status;
+	int		i;
+
+	status = 0;
+	child = safe_malloc(sizeof(pid_t) * (ft_3d_arrlen(piped_command)));
+	exe_pipe(my_envp, piped_command, NULL, child);
+	i = -1;
+	while (++i < ft_3d_arrlen(piped_command))
+	{
+		if (status)
+			kill(child[i], SIGKILL);
+		else
+			status = parent_process(child[i]);
+	}
+	free(child);
+	return (status);
+}
+
 int	execute_handler(t_my_envp *my_envp, char **command)
 {
 	char	***piped_command;
-	int		origin_std[2];
-	pid_t	*child;
-	int		i;
+	int		*origin_std;
+	int		status;
 
-	handle_stdfd(origin_std);
+	origin_std = NULL;
+	status = 0;
+	handle_stdfd(&origin_std);
 	piped_command = get_piped_command(command);
 	if (ft_3d_arrlen(piped_command) > 1)
-	{
-		child = safe_malloc(sizeof(pid_t) * (ft_3d_arrlen(piped_command)));
-		exe_pipe(my_envp, piped_command, NULL, child);
-		i = -1;
-		while (++i < ft_3d_arrlen(piped_command))
-			parent_process(child[i]);
-		free(child);
-	}
+		status = run_pipe(my_envp, piped_command);
 	else
 	{
 		*piped_command = handle_redirection(*piped_command);
 		if (!exe_bultin(my_envp, *piped_command))
-			handle_exe(*piped_command, my_envp);
+			status = handle_exe(*piped_command, my_envp);
 	}
-	handle_stdfd(origin_std);
-	return (free_command_3d(piped_command), 0);
+	handle_stdfd(&origin_std);
+	free(origin_std);
+	return (free_command_3d(piped_command), status);
 }
