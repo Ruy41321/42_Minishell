@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:23:25 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 12:51:53 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:24:45 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 void	execute_child(t_my_envp *my_envp, char ***command)
 {
 	*command = handle_redirection(*command);
-	if (!exe_bultin(my_envp, *command))
-		child_process(*command, my_envp);
+		if (*command)
+			if (!exe_bultin(my_envp, *command))
+				child_process(*command, my_envp);
 	free_command(*command, -1);
 	exit(0);
 }

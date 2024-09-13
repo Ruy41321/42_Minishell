@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 13:58:37 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:28:47 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,9 @@ int	execute_handler(t_my_envp *my_envp, char **command)
 	else
 	{
 		*piped_command = handle_redirection(*piped_command);
-		if (!exe_bultin(my_envp, *piped_command))
-			status = handle_exe(*piped_command, my_envp);
+		if (*piped_command)
+			if (!exe_bultin(my_envp, *piped_command))
+				status = handle_exe(*piped_command, my_envp);
 	}
 	handle_stdfd(&origin_std);
 	free(origin_std);
