@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 12:43:17 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 12:26:04 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	handle_stdfd(int *fd)
 
 int	handle_pipe(char **piped_command, int *p_fd, int *is_prep)
 {
-	if (*is_prep)
-		return (1);
 	*is_prep = is_prepipe_command(piped_command);
 	if (*is_prep)
 	{
@@ -92,4 +90,25 @@ char	**list_to_matrix(t_env_var *head)
 	}
 	envp[i] = NULL;
 	return (envp);
+}
+
+int	exe_bultin(t_my_envp *my_envp, char **command)
+{
+	if (handle_env_var_assignment(my_envp, command))
+		return (1);
+	if (ft_strcmp(command[0], "cd") == 0)
+		return (cd_builtin(my_envp, command), 1);
+	if (ft_strcmp(command[0], "echo") == 0)
+		return (echo_builtin(command), 1);
+	if (ft_strcmp(command[0], "env") == 0)
+		return (env_builtin(my_envp->exported), 1);
+	if (ft_strcmp(command[0], "exit") == 0)
+		return (exit_builtin(my_envp, command), 1);
+	if (ft_strcmp(command[0], "export") == 0)
+		return (export_builtin(my_envp, command), 1);
+	if (ft_strcmp(command[0], "pwd") == 0)
+		return (pwd_builtin(), 1);
+	if (ft_strcmp(command[0], "unset") == 0)
+		return (unset_builtin(my_envp, command), 1);
+	return (0);
 }

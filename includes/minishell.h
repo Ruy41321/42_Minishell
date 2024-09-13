@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 15:21:37 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 12:27:47 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ void	signal_handler_child(int sig);
 void	free_my_envp(t_my_envp *my_envp);
 void	increase_shlvl(t_env_var *head);
 char	*get_env_name(char *envp);
+int		exe_bultin(t_my_envp *my_envp, char **command);
+int		exe_pipe(t_my_envp *envp, char ***commands, int *old_pipe, pid_t *ch);
+void	child_process(char **piped_command, t_my_envp *envp);
 
 # define SYNTAX_ERROR "minishell:syntax error near unexpected token `"
 #endif
