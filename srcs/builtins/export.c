@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 02:15:07 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:37:36 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,17 @@ int	export_builtin(t_my_envp *my_envp, char **command)
 		return (export_existing(my_envp, command[1]), 0);
 	*equals_sign = '\0';
 	name = command[1];
+	name = remove_quotes(name);
 	if (get_delim(name))
 	{
 		*equals_sign = '=';
+		free(name);
 		return (1);
 	}
 	value = equals_sign + 1;
 	if (get_env_var(my_envp->locals, name))
 		delete_local_var(my_envp->locals, name);
 	set_env_var(my_envp->exported, name, value, 1);
+	free(name);
 	return (0);
 }

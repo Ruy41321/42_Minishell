@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 16:28:47 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:40:39 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	child_process(char **piped_command, t_my_envp *envp)
 {
 	char	*full_path;
+	char	**list;
 
 	signal(SIGINT, signal_handler_child);
 	if (!piped_command)
@@ -29,9 +30,11 @@ void	child_process(char **piped_command, t_my_envp *envp)
 		free_command(piped_command, -1);
 		exit(127);
 	}
-	if (execve(full_path, piped_command, list_to_matrix(envp->exported)) == -1)
+	list = list_to_matrix(envp->exported);
+	if (execve(full_path, piped_command, list) == -1)
 	{
 		perror(piped_command[0]);
+		free_command(list, -1);
 		free_command(piped_command, -1);
 		free(full_path);
 		exit(2);
