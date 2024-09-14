@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 12:23:25 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 17:24:45 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/15 01:27:14 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	execute_child(t_my_envp *my_envp, char ***command)
 {
 	*command = handle_redirection(*command);
-		if (*command)
-			if (!exe_bultin(my_envp, *command))
-				child_process(*command, my_envp);
+	if (*command)
+		if (!exe_bultin(my_envp, *command))
+			child_process(*command, my_envp);
 	free_command(*command, -1);
 	exit(0);
 }

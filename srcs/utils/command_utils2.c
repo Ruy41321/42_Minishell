@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 12:50:23 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:28:56 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ char	*deep_clean_input(char *input)
 	new_input = clean_input(new_input, ';');
 	if (!new_input)
 		return (NULL);
+	if (ft_strlen(new_input) == 0)
+		return (free(new_input), NULL);
 	new_input = redirect_syntax(new_input);
 	if (!new_input)
 		return (NULL);

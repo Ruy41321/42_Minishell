@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 17:41:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 15:16:50 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/15 01:23:13 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ char	*clean_input(char *input, char ch)
 			input[ft_strlen(input) - 1] = '\0';
 		temp = remove_consecutive_chars(input, ch);
 		result = trim_edges(temp, ch);
-		if (ft_strncmp(input, result, ft_strlen(input)) != 0)
+		if (ft_strlen(input) == 0
+			|| ft_strncmp(input, result, ft_strlen(input)) != 0)
 		{
 			free(result);
 			free(input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 15:21:58 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/14 01:47:54 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	parse_and_exec(t_my_envp *my_envp, char *input)
 	while (separated_inputs[i] != NULL)
 	{
 		new_input = substitute_dollars(my_envp, separated_inputs[i++]);
+		if (only_spaces(new_input))
+			return (free(new_input));
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		free(input);
@@ -73,8 +75,11 @@ char	*get_pwd(t_env_var *env)
 {
 	char	*pwd;
 	char	*home;
+	char	cwd[PATH_MAX];
 
 	pwd = get_env_var(env, "PWD");
+	if (!pwd)
+		pwd = getcwd(cwd, PATH_MAX);
 	home = get_env_var(env, "HOME");
 	if (home && pwd && ft_strncmp(pwd, home, ft_strlen(home)) == 0)
 		return (ft_strjoin_free("~", ft_strcpy(pwd + ft_strlen(home)), 2));
