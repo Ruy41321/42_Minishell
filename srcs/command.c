@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/14 01:47:54 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:46:44 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	parse_and_exec(t_my_envp *my_envp, char *input)
 	{
 		new_input = substitute_dollars(my_envp, separated_inputs[i++]);
 		if (only_spaces(new_input))
-			return (free(new_input));
+		{
+			free(new_input);
+			continue ;
+		}
 		input = clean_input(new_input, ' ');
 		command = get_list_command(input);
 		free(input);
