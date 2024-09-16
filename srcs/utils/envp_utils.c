@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:01:50 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 13:10:28 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:57:10 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,14 @@ char	*get_env_name(char *envp)
 	name = safe_malloc(i + 1);
 	ft_strlcpy(name, envp, i + 1);
 	return (name);
+}
+
+int	matrixlen(char **matrix)
+{
+	int	i;
+
+	i = 0;
+	while (matrix[i] != NULL)
+		i++;
+	return (i);
 }

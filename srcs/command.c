@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/16 08:46:44 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/17 01:48:56 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,19 @@ char	*get_colored_prompt(t_env_var *env)
 {
 	char	*pwd;
 	char	*user;
-	char	*temp;
-	char	*temp2;
 	char	*prompt;
 
 	pwd = get_pwd(env);
 	user = get_env_var(env, "USER");
-	temp = ft_strjoin(user, "@");
-	prompt = ft_strjoin("\033[1;33m", temp);
-	free(temp);
-	temp = ft_strjoin("\033[0m", ":");
-	temp2 = ft_strjoin(prompt, temp);
-	free(temp);
-	free(prompt);
-	temp = ft_strjoin("\033[1;34m", pwd);
-	free(pwd);
-	prompt = ft_strjoin(temp2, temp);
-	free(temp);
-	free(temp2);
-	temp = ft_strjoin("\033[0m", "$ ");
-	temp2 = ft_strjoin(prompt, temp);
-	free(temp);
-	free(prompt);
-	return (temp2);
+	if (!user)
+		user = get_env_var(env, "LOGNAME");
+	prompt = ft_strjoin(user, "@");
+	prompt = ft_strjoin_free("\033[1;33m", prompt, 2);
+	prompt = ft_strjoin_free(prompt, "\033[0m:", 1);
+	prompt = ft_strjoin_free(prompt, "\033[1;34m", 1);
+	prompt = ft_strjoin_free(prompt, pwd, 3);
+	prompt = ft_strjoin_free(prompt, "\033[0m$ ", 1);
+	return (prompt);
 }
 
 char	*get_input(t_my_envp *env)

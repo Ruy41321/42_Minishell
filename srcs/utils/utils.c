@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 13:19:20 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/16 08:25:04 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:56:49 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,4 @@ void	quotes_check(char *input, int *quotes, int *dquotes, int *i)
 		*quotes = !*quotes;
 	else if (input[*i] == '"' && !*quotes)
 		*dquotes = !*dquotes;
-}
-
-int	matrixlen(char **matrix)
-{
-	int	i;
-
-	i = 0;
-	while (matrix[i] != NULL)
-		i++;
-	return (i);
 }
