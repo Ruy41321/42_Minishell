@@ -6,25 +6,54 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/13 17:37:36 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:25:58 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	sort_env_matrix(char **env_matrix, int size)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (i < size)
+	{
+		j = i + 1;
+		while (j < size)
+		{
+			if (ft_strcmp(env_matrix[i], env_matrix[j]) > 0)
+			{
+				tmp = env_matrix[i];
+				env_matrix[i] = env_matrix[j];
+				env_matrix[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 static void	print_export(t_env_var *head)
 {
-	while (head != NULL)
+	char	**env_matrix;
+	int		size;
+	int		i;
+
+	env_matrix = list_to_matrix(head);
+	size = matrixlen(env_matrix);
+	sort_env_matrix(env_matrix, size);
+	i = 0;
+	while (env_matrix[i] != NULL)
 	{
-		if (head->value != NULL)
-		{
-			ft_putstr_fd(head->name, 1);
-			ft_putstr_fd("=", 1);
-			ft_putstr_fd(head->value, 1);
-			ft_putstr_fd("\n", 1);
-		}
-		head = head->next;
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(env_matrix[i], 1);
+		ft_putstr_fd("\n", 1);
+		i++;
 	}
+	free_command(env_matrix, size);
 }
 
 static int	delete_local_var(t_env_var *head, char *name)
