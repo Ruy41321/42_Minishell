@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 17:40:39 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:03:00 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	child_process(char **piped_command, t_my_envp *envp)
 		free_command(piped_command, -1);
 		exit(127);
 	}
-	list = list_to_matrix(envp->exported);
+	list = list_to_matrix(envp->exported, 1);
 	if (execve(full_path, piped_command, list) == -1)
 	{
 		perror(piped_command[0]);

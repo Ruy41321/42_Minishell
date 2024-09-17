@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/16 08:25:58 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:02:04 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	print_export(t_env_var *head)
 	int		size;
 	int		i;
 
-	env_matrix = list_to_matrix(head);
+	env_matrix = list_to_matrix(head, 0);
 	size = matrixlen(env_matrix);
 	sort_env_matrix(env_matrix, size);
 	i = 0;
@@ -92,6 +92,8 @@ static void	export_existing(t_my_envp *my_envp, char *name)
 		set_env_var(my_envp->exported, name, value, 1);
 		delete_local_var(my_envp->locals, name);
 	}
+	else
+		set_env_var(my_envp->exported, name, "", 1);
 }
 
 int	export_builtin(t_my_envp *my_envp, char **command)

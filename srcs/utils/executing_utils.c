@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/13 13:07:48 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:10:33 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	handle_env_var_assignment(t_my_envp *my_envp, char **piped_command)
 	return (0);
 }
 
-char	**list_to_matrix(t_env_var *head)
+char	**list_to_matrix(t_env_var *head, int check_empty)
 {
 	char		**envp;
 	int			i;
@@ -81,13 +81,15 @@ char	**list_to_matrix(t_env_var *head)
 	}
 	envp = safe_malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	tmp = head;
-	while (tmp != NULL)
+	while (head != NULL)
 	{
-		envp[i] = ft_strjoin(tmp->name, "=");
-		envp[i] = ft_strjoin_free(envp[i], tmp->value, 1);
-		i++;
-		tmp = tmp->next;
+		if (ft_strcmp(head->value, "") != 0 || !check_empty)
+		{
+			envp[i] = ft_strjoin(head->name, "=");
+			envp[i] = ft_strjoin_free(envp[i], head->value, 1);
+			i++;
+		}
+		head = head->next;
 	}
 	envp[i] = NULL;
 	return (envp);

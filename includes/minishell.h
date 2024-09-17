@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/16 08:25:28 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:02:29 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ extern long long	g_exit_status;
 
 void	signal_init(void);
 int		execute_handler(t_my_envp *my_envp, char **command);
-char	**list_to_matrix(t_env_var *head);
+char	**list_to_matrix(t_env_var *head, int check_empty);
 int		matrixlen(char **matrix);
 char	*get_input(t_my_envp *my_envp);
 char	*substitute_dollars(t_my_envp *my_envp, char *input);
