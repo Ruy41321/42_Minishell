@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:04 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/16 04:12:47 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/18 03:08:31 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ static int	is_chdir_allowed(char *path, int mallocated)
 static int	arg_check(t_my_envp *my_envp, char **command, char **path)
 {
 	*path = command[1];
-	if (command[2] != NULL)
-		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
-	else if (command[1] == NULL || ft_strcmp(command[1], "~") == 0)
+	if (command[1] == NULL || ft_strcmp(command[1], "~") == 0)
 	{
 		*path = get_env_var(my_envp->exported, "HOME");
 		if (*path == NULL)
 			return (1);
 	}
+	else if (command[2] != NULL)
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	else if (ft_strcmp(command[1], "-") == 0)
 	{
 		*path = get_env_var(my_envp->exported, "OLDPWD");
