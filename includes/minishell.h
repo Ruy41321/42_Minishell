@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 10:33:51 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:39:36 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ char	*get_env_name(char *envp);
 int		exe_bultin(t_my_envp *my_envp, char **command);
 int		exe_pipe(t_my_envp *envp, char ***commands, int *old_pipe, pid_t *ch);
 void	child_process(char **piped_command, t_my_envp *envp);
+void	copy_remaining_chars(char *input, char *output, int *i, int *j);
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `"
 #endif

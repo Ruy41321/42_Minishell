@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/06 03:06:54 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:39:52 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ void	init_separeted(char ***separated, int *quotes, int *c, char *input)
 	quotes[1] = 0;
 	*separated = safe_malloc(sizeof(char *) * 20);
 	*separated[0] = safe_malloc(sizeof(char) * (ft_strlen(input) + 1));
+}
+
+char	*redirect_syntax(char *input)
+{
+	int		len;
+	int		i;
+	int		j;
+	char	*output;
+	char	*token;
+
+	token = syntax_error(input);
+	if (token)
+	{
+		output = ft_strjoin_free(SYNTAX_ERROR, token, 2);
+		ft_putstr_fd(output, STDERR_FILENO);
+		free(output);
+		free(input);
+		return (NULL);
+	}
+	len = ft_strlen(input);
+	output = (char *)safe_malloc(len * 3 + 1);
+	i = 0;
+	j = 0;
+	copy_remaining_chars(input, output, &i, &j);
+	free(input);
+	return (output);
 }

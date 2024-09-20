@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:53:07 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 03:21:24 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:38:57 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,32 +107,6 @@ void	copy_remaining_chars(char *input, char *output, int *i, int *j)
 		(*i)++;
 	}
 	output[*j] = '\0';
-}
-
-char	*redirect_syntax(char *input)
-{
-	int		len;
-	int		i;
-	int		j;
-	char	*output;
-	char	*token;
-
-	token = syntax_error(input);
-	if (token)
-	{
-		output = ft_strjoin_free(SYNTAX_ERROR, token, 2);
-		ft_putstr_fd(output, STDERR_FILENO);
-		free(output);
-		free(input);
-		return (NULL);
-	}
-	len = ft_strlen(input);
-	output = (char *)safe_malloc(len * 3 + 1);
-	i = 0;
-	j = 0;
-	copy_remaining_chars(input, output, &i, &j);
-	free(input);
-	return (output);
 }
 
 char	**handle_redirection(char **command)
