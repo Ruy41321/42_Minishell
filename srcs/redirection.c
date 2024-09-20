@@ -6,40 +6,11 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:53:07 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 10:38:57 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:32:21 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	redirect_input_heredoc(char *terminator)
-{
-	int		fd;
-	char	*line;
-
-	fd = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		return (1);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strncmp(line, terminator, ft_strlen(terminator)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
-	}
-	close(fd);
-	fd = open("/tmp/heredoc", O_RDONLY);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (0);
-}
 
 int	handle_single_redirection(char **command, int *i, int *c)
 {
@@ -50,11 +21,9 @@ int	handle_single_redirection(char **command, int *i, int *c)
 	ret = 0;
 	if (ft_strncmp(command[*i], "<", len) == 0)
 		ret = redirect_input(command[*i + 1]);
-	if (ft_strncmp(command[*i], "<<", len) == 0)
-		ret = redirect_input_heredoc(command[*i + 1]);
 	else if (ft_strncmp(command[*i], ">", len) == 0)
 		ret = redirect_output(command[*i + 1], O_WRONLY | O_CREAT | O_TRUNC);
-	else if (ft_strncmp(command[*i], ">>", len) == 0)
+	else if (ft_strcmp(command[*i], ">>") == 0)
 		ret = redirect_output(command[*i + 1], O_WRONLY | O_CREAT | O_APPEND);
 	else
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/17 20:03:00 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:58:07 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,19 @@ int	execute_handler(t_my_envp *my_envp, char **command)
 	origin_std = NULL;
 	status = 0;
 	handle_stdfd(&origin_std);
+	command = handle_heredoc(command, origin_std[0]);
+	if (!command)
+		return (free(origin_std), 1);	
 	piped_command = get_piped_command(command);
 	if (ft_3d_arrlen(piped_command) > 1)
 		status = run_pipe(my_envp, piped_command);
 	else
 	{
 		*piped_command = handle_redirection(*piped_command);
-		if (*piped_command)
-			if (!exe_bultin(my_envp, *piped_command))
-				status = handle_exe(*piped_command, my_envp);
+		if (!*piped_command)
+			status = 1;
+		else if (!exe_bultin(my_envp, *piped_command))
+			status = handle_exe(*piped_command, my_envp);
 	}
 	handle_stdfd(&origin_std);
 	free(origin_std);
