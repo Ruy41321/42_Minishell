@@ -1,18 +1,13 @@
 DA FARE:
 
+1.
+	Rimuovere l interpretazione di ; semicolon (new subject)
+	gestire heredoc
+	accertarsi sull uso corretto della globale (new subject)
+
 *. Luigi
-	1. Non usare più di una variabile globale:
-		Rifletti sul motivo per cui hai scelto questa variabile globale e sii pronto a spiegare il perché.
 
 *. Federico
-	4. Implementazione dei Built-in (come in bash):
-	- echo con l'opzione -n
-	- cd utilizzando solo un percorso relativo o assoluto
-	- pwd senza opzioni
-	- export senza opzioni
-	- unset senza opzioni
-	- env senza opzioni e argomenti
-	- exit senza opzioni
 
 #. Norminettata finale
 

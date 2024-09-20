@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 02:15:25 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:33:18 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,20 @@ char	**get_list_command(char *input)
 	return (command);
 }
 
-void	parse_and_exec(t_my_envp *my_envp, t_parser *pars, int i)
+void	parse_and_exec(t_my_envp *my_envp, t_parser *pars)
 {
 	if (only_spaces(pars->input))
 		return (free(pars->input));
 	pars->new_input = deep_clean_input(pars->input);
 	if (!pars->new_input)
 		return ;
-	pars->sep_inputs = get_separeted_inputs(pars->new_input);
-	free(pars->new_input);
-	while (pars->sep_inputs[i] != NULL)
-	{
-		pars->new_input = substitute_dollars(my_envp, pars->sep_inputs[i++]);
-		if (only_spaces(pars->new_input))
-		{
-			free(pars->new_input);
-			continue ;
-		}
-		pars->input = clean_input(pars->new_input, ' ');
-		pars->command = get_list_command(pars->input);
-		free(pars->input);
-		if (execute_handler(my_envp, pars->command))
-			while (pars->sep_inputs[i] != NULL)
-				free(pars->sep_inputs[i++]);
-	}
-	free(pars->sep_inputs);
+	pars->new_input = substitute_dollars(my_envp, pars->new_input);
+	if (only_spaces(pars->new_input))
+		return (free(pars->new_input));
+	pars->input = clean_input(pars->new_input, ' ');
+	pars->command = get_list_command(pars->input);
+	free(pars->input);
+	execute_handler(my_envp, pars->command);
 }
 
 char	*get_pwd(t_env_var *env)

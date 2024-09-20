@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 02:15:35 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:33:51 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		cd_builtin(t_my_envp *my_envp, char **command);
 int		echo_builtin(char **command);
 int		unset_builtin(t_my_envp *my_envp, char **command);
 int		exit_builtin(t_my_envp *my_envp, char **command);
-void	parse_and_exec(t_my_envp *my_envp, t_parser *pars, int i);
+void	parse_and_exec(t_my_envp *my_envp, t_parser *pars);
 char	*get_env_var(t_env_var *env, char *var_name);
 char	*get_full_path(char *command, t_env_var *env);
 void	free_command(char **command, int len);

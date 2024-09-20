@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/14 18:28:56 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:20:16 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ char	*are_consecutives(char *input)
 			i++;
 			while (input[i] == ' ')
 				i++;
-			if (input[i] == ';')
-				return (ft_strdup(";`\n"));
 			if (input[i] == '|')
 				return (ft_strdup("|`\n"));
 		}
@@ -109,9 +107,6 @@ char	*deep_clean_input(char *input)
 	char	*temp;
 
 	new_input = clean_input(input, ' ');
-	if (!new_input)
-		return (NULL);
-	new_input = clean_input(new_input, ';');
 	if (!new_input)
 		return (NULL);
 	if (ft_strlen(new_input) == 0)
