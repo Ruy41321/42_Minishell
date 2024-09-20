@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/17 01:48:56 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 02:15:25 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,31 @@ char	**get_list_command(char *input)
 	return (command);
 }
 
-void	parse_and_exec(t_my_envp *my_envp, char *input)
+void	parse_and_exec(t_my_envp *my_envp, t_parser *pars, int i)
 {
-	char	**separated_inputs;
-	char	**command;
-	char	*new_input;
-	int		i;
-
-	if (only_spaces(input))
-		return (free(input));
-	new_input = deep_clean_input(input);
-	if (!new_input)
+	if (only_spaces(pars->input))
+		return (free(pars->input));
+	pars->new_input = deep_clean_input(pars->input);
+	if (!pars->new_input)
 		return ;
-	separated_inputs = get_separeted_inputs(new_input);
-	free(new_input);
-	i = 0;
-	while (separated_inputs[i] != NULL)
+	pars->sep_inputs = get_separeted_inputs(pars->new_input);
+	free(pars->new_input);
+	while (pars->sep_inputs[i] != NULL)
 	{
-		new_input = substitute_dollars(my_envp, separated_inputs[i++]);
-		if (only_spaces(new_input))
+		pars->new_input = substitute_dollars(my_envp, pars->sep_inputs[i++]);
+		if (only_spaces(pars->new_input))
 		{
-			free(new_input);
+			free(pars->new_input);
 			continue ;
 		}
-		input = clean_input(new_input, ' ');
-		command = get_list_command(input);
-		free(input);
-		if (execute_handler(my_envp, command))
-			while (separated_inputs[i] != NULL)
-				free(separated_inputs[i++]);
+		pars->input = clean_input(pars->new_input, ' ');
+		pars->command = get_list_command(pars->input);
+		free(pars->input);
+		if (execute_handler(my_envp, pars->command))
+			while (pars->sep_inputs[i] != NULL)
+				free(pars->sep_inputs[i++]);
 	}
-	free(separated_inputs);
+	free(pars->sep_inputs);
 }
 
 char	*get_pwd(t_env_var *env)

@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/17 20:02:29 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 02:15:35 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ typedef struct s_my_envp
 	t_env_var	*exported;
 }	t_my_envp;
 
+typedef struct s_parser
+{
+	char	**sep_inputs;
+	char	**command;
+	char	*input;
+	char	*new_input;
+}	t_parser;
+
 extern long long	g_exit_status;
 
 void	signal_init(void);
@@ -54,7 +62,7 @@ int		cd_builtin(t_my_envp *my_envp, char **command);
 int		echo_builtin(char **command);
 int		unset_builtin(t_my_envp *my_envp, char **command);
 int		exit_builtin(t_my_envp *my_envp, char **command);
-void	parse_and_exec(t_my_envp *my_envp, char *input);
+void	parse_and_exec(t_my_envp *my_envp, t_parser *pars, int i);
 char	*get_env_var(t_env_var *env, char *var_name);
 char	*get_full_path(char *command, t_env_var *env);
 void	free_command(char **command, int len);

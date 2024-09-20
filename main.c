@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/12 11:12:27 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/19 21:57:13 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_my_envp	*init_envp(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char		*input;
 	t_my_envp	*my_envp;
+	t_parser	parser;
 
 	if (argc > 1 && argv)
 	{
@@ -68,10 +68,10 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		signal_init();
-		input = get_input(my_envp);
-		if (!input)
+		parser.input = get_input(my_envp);
+		if (!parser.input)
 			break ;
-		parse_and_exec(my_envp, input);
+		parse_and_exec(my_envp, &parser, 0);
 	}
 	free_my_envp(my_envp);
 	ft_printf("exit\n");
