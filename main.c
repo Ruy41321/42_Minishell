@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 11:25:26 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:16:01 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ t_my_envp	*init_envp(char **envp)
 	return (my_envp);
 }
 
+void	clean_tmp_files(void)
+{
+	int		i;
+	char	*filename;
+
+	i = 0;
+	while (1)
+	{
+		filename = ft_strjoin_free("/tmp/heredoc", ft_itoa(i), 2);
+		if (access(filename, F_OK) == -1)
+		{
+			free(filename);
+			break ;
+		}
+		unlink(filename);
+		free(filename);
+		i++;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_my_envp	*my_envp;
@@ -73,6 +93,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		parse_and_exec(my_envp, &parser);
 	}
+	clean_tmp_files();
 	free_my_envp(my_envp);
 	ft_printf("exit\n");
 	return (0);

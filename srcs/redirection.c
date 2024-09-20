@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:53:07 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 12:32:21 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:33:13 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,6 @@ char	**handle_redirection(char **command)
 	new_command = create_new_command(command, i, c);
 	free(command);
 	if (!*new_command)
-		return (free_command(new_command, len), NULL);
+		return (free(new_command), NULL);
 	return (new_command);
 }

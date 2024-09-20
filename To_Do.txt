@@ -1,7 +1,6 @@
 DA FARE:
 
 1.
-	Rimuovere l interpretazione di ; semicolon (new subject)
 	gestire heredoc
 	accertarsi sull uso corretto della globale (new subject)
 

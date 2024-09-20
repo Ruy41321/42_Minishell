@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 02:44:03 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:11:50 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,17 @@ int	redirect_input(char *file)
 		else
 			str = ft_strjoin_free(SYNTAX_ERROR, ">`\n", 0);
 		ft_putstr_fd(str, STDERR_FILENO);
-		free(str);
-		return (1);
+		return (free(str), 1);
 	}
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
 		str = ft_strjoin("minishell: ", file);
 		perror(str);
-		free(str);
-		return (1);
+		return (free(str), 1);
 	}
 	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (0);
+	return (close(fd), 0);
 }
 
 int	redirect_output(char *file, int flags)

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:47:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 12:46:51 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:29:03 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,28 @@ int	get_heredoc_fd(int count)
 	return (fd);
 }
 
-int	redirect_input_heredoc(char *terminator, int count, int stdin_fd)
+void	print_heredoc_warning(char *terminator)
+{
+	ft_putstr_fd("minishell: warning: ", STDERR_FILENO);
+	ft_putstr_fd(HEREDOC_WARN, STDERR_FILENO);
+	ft_putstr_fd(terminator, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
+}
+
+int	redirect_input_heredoc(char *terminator, int count)
 {
 	int		fd;
 	char	*line;
 
 	fd = get_heredoc_fd(count);
-	dup2(stdin_fd, STDIN_FILENO);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			print_heredoc_warning(terminator);
 			break ;
+		}
 		if (ft_strncmp(line, terminator, ft_strlen(terminator)) == 0)
 		{
 			free(line);
@@ -82,7 +92,7 @@ char	**substitute_heredoc(char **command)
 	return (free_command(command, len), new_command);
 }
 
-char	**handle_heredoc(char **command, int stdin_fd)
+char	**handle_heredoc(char **command)
 {
 	char	**new_command;
 	int		i;
@@ -93,7 +103,7 @@ char	**handle_heredoc(char **command, int stdin_fd)
 	while (command[++i] != NULL)
 	{
 		if (ft_strcmp(command[i], "<<") == 0)
-			if (redirect_input_heredoc(command[++i], count++, stdin_fd))
+			if (redirect_input_heredoc(command[++i], count++))
 				return (free_command(command, -1), NULL);
 	}
 	new_command = substitute_heredoc(command);
