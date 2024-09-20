@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/09 15:17:12 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/20 02:44:03 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ char	*redirect_error(char *input, int i, int len)
 		return (ft_strdup("newline`\n"));
 	else if (input[i] == '<')
 	{
-		if (is_redirect_char(input[i + 1]))
+		if ((input[i + 1] == '<' && is_redirect_char(input[i + 2])) \
+		|| input[i + 1] == '>')
 			return (ft_strdup("<`\n"));
 	}
 	else if (input[i] == '>')
