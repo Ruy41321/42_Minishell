@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:04 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/18 03:08:31 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/21 05:14:57 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	arg_check(t_my_envp *my_envp, char **command, char **path)
 	{
 		*path = get_env_var(my_envp->exported, "HOME");
 		if (*path == NULL)
-			return (1);
+			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 	}
 	else if (command[2] != NULL)
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
@@ -59,9 +59,26 @@ static int	arg_check(t_my_envp *my_envp, char **command, char **path)
 	{
 		*path = get_env_var(my_envp->exported, "OLDPWD");
 		if (*path == NULL)
+			*path = get_env_var(my_envp->locals, "OLDPWD");
+		if (*path == NULL)
 			return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), 1);
 	}
 	return (0);
+}
+
+static void	set_pwd(t_my_envp *my_envp, char *pwd, char *oldpwd)
+{
+	if (get_env_var(my_envp->exported, "OLDPWD") == NULL)
+	{
+		if (oldpwd != NULL)
+			set_env_var(my_envp->locals, "OLDPWD", oldpwd, 1);
+	}
+	else
+		set_env_var(my_envp->exported, "OLDPWD", oldpwd, 1);
+	if (get_env_var(my_envp->exported, "PWD") == NULL)
+		set_env_var(my_envp->locals, "PWD", pwd, 1);
+	else
+		set_env_var(my_envp->exported, "PWD", pwd, 1);
 }
 
 int	cd_builtin(t_my_envp *my_envp, char **command)
@@ -74,12 +91,15 @@ int	cd_builtin(t_my_envp *my_envp, char **command)
 	if (arg_check(my_envp, command, &path))
 		return (1);
 	oldpwd = get_env_var(my_envp->exported, "PWD");
+	if (oldpwd == NULL)
+		oldpwd = get_env_var(my_envp->locals, "PWD");
 	path = replace_tilde(path, my_envp->exported, &mallocated);
 	if (is_chdir_allowed(path, mallocated))
 		return (1);
+	if (ft_strcmp(command[1], "-") == 0)
+		ft_putendl_fd(path, 1);
 	pwd = getcwd(NULL, 0);
-	set_env_var(my_envp->exported, "OLDPWD", oldpwd, 1);
-	set_env_var(my_envp->exported, "PWD", pwd, 1);
+	set_pwd(my_envp, pwd, oldpwd);
 	free(pwd);
 	return (1);
 }
