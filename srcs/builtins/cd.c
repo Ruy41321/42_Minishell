@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:04 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/21 05:14:57 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:04:37 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	cd_builtin(t_my_envp *my_envp, char **command)
 	path = replace_tilde(path, my_envp->exported, &mallocated);
 	if (is_chdir_allowed(path, mallocated))
 		return (1);
-	if (ft_strcmp(command[1], "-") == 0)
+	if (command[1] && ft_strcmp(command[1], "-") == 0)
 		ft_putendl_fd(path, 1);
 	pwd = getcwd(NULL, 0);
 	set_pwd(my_envp, pwd, oldpwd);
