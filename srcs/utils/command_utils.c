@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 10:39:52 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:08:11 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*redirect_syntax(char *input)
 	token = syntax_error(input);
 	if (token)
 	{
+		g_exit_status = 2;
 		output = ft_strjoin_free(SYNTAX_ERROR, token, 2);
 		ft_putstr_fd(output, STDERR_FILENO);
 		free(output);

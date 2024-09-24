@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 14:53:31 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:39:58 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,25 @@ void	child_process(char **piped_command, t_my_envp *envp)
 {
 	char	*full_path;
 	char	**list;
+	int		exit_status;
 
 	signal(SIGINT, signal_handler_child);
 	if (!piped_command)
 		exit(1);
 	remove_quotes_2d(piped_command);
 	full_path = get_full_path(piped_command[0], envp->exported);
-	if (!full_path)
+	exit_status = handle_wrong_exe(full_path);
+	if (exit_status)
 	{
-		full_path = ft_strjoin(piped_command[0], ": command not found\n");
-		ft_putstr_fd(full_path, 2);
-		free(full_path);
+		if (full_path)
+			free(full_path);
 		free_command(piped_command, -1);
-		exit(127);
+		exit(exit_status);
 	}
 	list = list_to_matrix(envp->exported, 1);
 	if (execve(full_path, piped_command, list) == -1)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror(piped_command[0]);
 		free_command(list, -1);
 		free_command(piped_command, -1);

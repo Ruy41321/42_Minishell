@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 15:28:57 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:12:29 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <linux/limits.h>
@@ -99,6 +101,7 @@ int		exe_pipe(t_my_envp *envp, char ***commands, int *old_pipe, pid_t *ch);
 void	child_process(char **piped_command, t_my_envp *envp);
 void	copy_remaining_chars(char *input, char *output, int *i, int *j);
 char	**handle_heredoc(char **command);
+int		handle_wrong_exe(char *full_path);
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `"
 # define HEREDOC_WARN "here-document delimited by end-of-file (wanted `"

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/04 22:29:45 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:38:50 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	*fill_new_input(t_my_envp *my_envp, char *input, int *i, int *quotes)
 		}
 		else
 			handle_expansion(input, i, &new_input, my_envp);
+		g_exit_status = 0;
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 15:11:50 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:21:39 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ int	is_redirect_char(char c)
 	return (c == '<' || c == '>');
 }
 
-int	redirect_input(char *file)
+int	redirect_input(char *fil)
 {
 	int		fd;
 	char	*str;
+	char	*file;
 
+	file = remove_quotes(fil);
 	if (is_redirect_char(file[0]))
 	{
 		if (file[0] == '<')
@@ -29,6 +31,7 @@ int	redirect_input(char *file)
 		else
 			str = ft_strjoin_free(SYNTAX_ERROR, ">`\n", 0);
 		ft_putstr_fd(str, STDERR_FILENO);
+		free(file);
 		return (free(str), 1);
 	}
 	fd = open(file, O_RDONLY);
@@ -36,17 +39,21 @@ int	redirect_input(char *file)
 	{
 		str = ft_strjoin("minishell: ", file);
 		perror(str);
+		free(file);
 		return (free(str), 1);
 	}
 	dup2(fd, STDIN_FILENO);
+	free(file);
 	return (close(fd), 0);
 }
 
-int	redirect_output(char *file, int flags)
+int	redirect_output(char *fil, int flags)
 {
 	int		fd;
 	char	*str;
+	char	*file;
 
+	file = remove_quotes(fil);
 	if (is_redirect_char(file[0]))
 	{
 		if (file[0] == '<')
@@ -55,7 +62,7 @@ int	redirect_output(char *file, int flags)
 			str = ft_strjoin_free(SYNTAX_ERROR, ">`\n", 0);
 		ft_putstr_fd(str, STDERR_FILENO);
 		free(str);
-		return (1);
+		return (free(file), 1);
 	}
 	fd = open(file, flags, 0644);
 	if (fd < 0)
@@ -63,29 +70,30 @@ int	redirect_output(char *file, int flags)
 		str = ft_strjoin("minishell: ", file);
 		perror(str);
 		free(str);
-		return (1);
+		return (free(file), 1);
 	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	return (0);
+	return (free(file), 0);
 }
 
 char	*redirect_error(char *input, int i, int len)
 {
 	if (i == len - 1 || input[i + 1] == '\n')
-		return (ft_strdup("newline`\n"));
-	else if (input[i] == '<')
+		return (ft_strdup("newline'\n"));
+	if (input[i] == '<')
 	{
 		if ((input[i + 1] == '<' && is_redirect_char(input[i + 2])) \
 		|| input[i + 1] == '>')
-			return (ft_strdup("<`\n"));
+			return (ft_strdup("<'\n"));
 	}
 	else if (input[i] == '>')
 	{
 		if ((input[i + 1] == '>' && is_redirect_char(input[i + 2])) \
 		|| input[i + 1] == '<')
-			return (ft_strdup(">`\n"));
+			return (ft_strdup(">'\n"));
 	}
+	
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:58:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 10:20:16 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:14:29 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*are_consecutives(char *input)
 			while (input[i] == ' ')
 				i++;
 			if (input[i] == '|')
-				return (ft_strdup("|`\n"));
+				return (ft_strdup("|'\n"));
 		}
 		else
 			i++;
@@ -97,6 +97,7 @@ char	*pipe_syntax(char *input)
 
 void	print_syntax_error(char *input)
 {
+	g_exit_status = 2;
 	ft_putstr_fd(SYNTAX_ERROR, STDERR_FILENO);
 	ft_putstr_fd(input, STDERR_FILENO);
 }
@@ -111,12 +112,12 @@ char	*deep_clean_input(char *input)
 		return (NULL);
 	if (ft_strlen(new_input) == 0)
 		return (free(new_input), NULL);
+	new_input = pipe_syntax(new_input);
+	if (!new_input)
+		return (print_syntax_error("|'\n"), NULL);
 	new_input = redirect_syntax(new_input);
 	if (!new_input)
 		return (NULL);
-	new_input = pipe_syntax(new_input);
-	if (!new_input)
-		return (print_syntax_error("|`\n"), NULL);
 	temp = are_consecutives(new_input);
 	if (temp)
 	{
