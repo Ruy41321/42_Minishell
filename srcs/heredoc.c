@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:47:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 15:29:03 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/21 04:30:14 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	redirect_input_heredoc(char *terminator, int count)
 			print_heredoc_warning(terminator);
 			break ;
 		}
-		if (ft_strncmp(line, terminator, ft_strlen(terminator)) == 0)
+		if (ft_strncmp(line, terminator, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 12:36:00 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/24 22:05:19 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	handle_env_var_assignment(t_my_envp *my_envp, char **piped_command)
 	{
 		*equals_sign = '\0';
 		name = *piped_command;
-		if (get_delim(name))
+		if (get_delim(name) || !ft_isalpha(name[0]))
 		{
 			*equals_sign = '=';
 			return (0);
