@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 20:12:29 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:28:26 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int		matrixlen(char **matrix);
 char	*get_input(t_my_envp *my_envp);
 char	*substitute_dollars(t_my_envp *my_envp, char *input);
 int		set_env_var(t_env_var *head, char *name, char *value, int create);
+void	set_exit_status(int status);
+void	builtin_error(char *builtin, char *value, char *error);
 int		export_builtin(t_my_envp *my_envp, char **command);
 int		pwd_builtin(void);
 void	env_builtin(t_env_var *env);

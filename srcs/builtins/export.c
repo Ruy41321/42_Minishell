@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/22 03:14:26 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:01:33 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,10 @@ static void	export_existing(t_my_envp *my_envp, char *name)
 {
 	char	*value;
 
-	if (!ft_isalpha(name[0]) && name[0] != '_')
+	if (!ft_isalpha(name[0]) || name[0] == '_' || get_delim(name))
 	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
+		builtin_error("export", name, "not a valid identifier");
+		set_exit_status(1);
 		return ;
 	}
 	value = get_env_var(my_envp->locals, name);
@@ -120,9 +119,8 @@ int	export_builtin(t_my_envp *my_envp, char **command)
 	if (get_delim(name) || !ft_isalpha(name[0]))
 	{
 		*equals_sign = '=';
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(command[1], 2);
-		return (ft_putstr_fd("': not a valid identifier\n", 2), free(name), 1);
+		builtin_error("export", command[1], "not a valid identifier");
+		return (set_exit_status(1), free(name), 1);
 	}
 	value = equals_sign + 1;
 	if (get_env_var(my_envp->locals, name))
