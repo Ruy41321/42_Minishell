@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 14:53:07 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 15:22:55 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:29:19 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**create_new_command(char **command, int i, int c)
 
 void	copy_remaining_chars(char *input, char *output, int *i, int *j)
 {
-	int quotes[2];
+	int	quotes[2];
 
 	quotes[0] = 0;
 	quotes[1] = 0;
@@ -102,10 +102,7 @@ char	**handle_redirection(char **command)
 			break ;
 	}
 	if (status)
-	{
-		g_exit_status = status;
-		return (free_command(command, len), NULL);
-	}
+		return (free_command(command, len), set_exit_status(status), NULL);
 	new_command = create_new_command(command, i, c);
 	free(command);
 	if (!*new_command)

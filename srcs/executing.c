@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 21:39:58 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:42:10 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,7 @@ void	child_process(char **piped_command, t_my_envp *envp)
 	}
 	list = list_to_matrix(envp->exported, 1);
 	if (execve(full_path, piped_command, list) == -1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(piped_command[0]);
-		free_command(list, -1);
-		free_command(piped_command, -1);
-		free(full_path);
-		exit(2);
-	}
+		execve_error(full_path, list, piped_command);
 }
 
 int	parent_process(pid_t ch)
@@ -55,8 +48,7 @@ int	parent_process(pid_t ch)
 	{
 		g_exit_status = 128 + WTERMSIG(child_status);
 		if (WTERMSIG(child_status) == SIGINT)
-			ft_printf("\n");
-		return (1);
+			return (ft_printf("\n"), 1);
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:35 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/26 15:54:25 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:43:04 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,14 @@ int	exit_builtin(t_my_envp *my_envp, char **command)
 		free(temp);
 	}
 	return (safe_exit(my_envp, command), 0);
+}
+
+void	execve_error(char *full_path, char **list, char **piped_command)
+{
+	ft_putstr_fd("minishell: ", 2);
+	perror(piped_command[0]);
+	free_command(list, -1);
+	free_command(piped_command, -1);
+	free(full_path);
+	exit(2);
 }

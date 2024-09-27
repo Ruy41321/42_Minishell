@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 23:45:19 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 15:21:39 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:31:31 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	redirect_input(char *fil)
 		return (free(str), 1);
 	}
 	dup2(fd, STDIN_FILENO);
-	free(file);
-	return (close(fd), 0);
+	return (close(fd), free(file), 0);
 }
 
 int	redirect_output(char *fil, int flags)
@@ -73,8 +72,7 @@ int	redirect_output(char *fil, int flags)
 		return (free(file), 1);
 	}
 	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (free(file), 0);
+	return (free(file), close(fd), 0);
 }
 
 char	*redirect_error(char *input, int i, int len)
@@ -93,7 +91,6 @@ char	*redirect_error(char *input, int i, int len)
 		|| input[i + 1] == '<')
 			return (ft_strdup(">'\n"));
 	}
-	
 	return (NULL);
 }
 

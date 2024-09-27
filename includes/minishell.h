@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/26 15:28:26 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:42:31 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	child_process(char **piped_command, t_my_envp *envp);
 void	copy_remaining_chars(char *input, char *output, int *i, int *j);
 char	**handle_heredoc(char **command);
 int		handle_wrong_exe(char *full_path);
+void	execve_error(char *full_path, char **list, char **piped_command);
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `"
 # define HEREDOC_WARN "here-document delimited by end-of-file (wanted `"
