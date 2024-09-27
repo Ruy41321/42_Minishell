@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 12:38:50 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:06:25 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ void	handle_expansion(char *input, int *i, char **new_input, t_my_envp *env)
 		(*i) += ft_strlen(input + *i + 1);
 }
 
+int	is_val_start(char c)
+{
+	if (c == '_' || ft_isalnum(c))
+		return (1);
+	return (0);
+}
+
 /**
  * quotes[2];
  * quotes[0] : single quotes flag
@@ -66,7 +73,7 @@ char	*fill_new_input(t_my_envp *my_envp, char *input, int *i, int *quotes)
 
 	new_input = ft_strdup("");
 	if (input[*i] == '$' && input[*i + 1] != '\0' && \
-	quotes[0] == 0 && (ft_isalnum(input[*i + 1]) || input[*i + 1] == '?'))
+	quotes[0] == 0 && (is_val_start(input[*i + 1]) || input[*i + 1] == '?'))
 	{
 		if (input[*i + 1] == '?')
 		{
@@ -112,33 +119,4 @@ char	*substitute_dollars(t_my_envp *my_envp, char *input)
 	}
 	free(input);
 	return (new_input);
-}
-
-int	set_env_var(t_env_var *head, char *name, char *value, int create)
-{
-	value = remove_quotes(value);
-	if (head->name == NULL)
-	{
-		head->name = ft_strdup(name);
-		head->value = ft_strdup(value);
-	}
-	else
-	{
-		while (head->next != NULL && ft_strcmp(head->name, name))
-			head = head->next;
-		if (!ft_strcmp(head->name, name))
-		{
-			free(head->value);
-			head->value = ft_strdup(value);
-			return (free(value), 1);
-		}
-		else if (create)
-		{
-			head->next = safe_malloc(sizeof(t_env_var));
-			head->next->name = ft_strdup(name);
-			head->next->value = ft_strdup(value);
-			head->next->next = NULL;
-		}
-	}
-	return (free(value), 0);
 }
