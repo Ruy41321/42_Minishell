@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:32:02 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 10:33:18 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:33:04 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	parse_and_exec(t_my_envp *my_envp, t_parser *pars)
 	pars->new_input = deep_clean_input(pars->input);
 	if (!pars->new_input)
 		return ;
-	pars->new_input = substitute_dollars(my_envp, pars->new_input);
+	pars->new_input = substitute_dollars(my_envp, pars);
 	if (only_spaces(pars->new_input))
 		return (free(pars->new_input));
 	pars->input = clean_input(pars->new_input, ' ');

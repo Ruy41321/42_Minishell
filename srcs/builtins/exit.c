@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:35 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/27 11:43:04 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:18:21 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exit_builtin(t_my_envp *my_envp, char **command)
 		}
 		free(temp);
 	}
-	return (safe_exit(my_envp, command), 0);
+	return (ft_putstr_fd("exit\n", 2), safe_exit(my_envp, command), 0);
 }
 
 void	execve_error(char *full_path, char **list, char **piped_command)

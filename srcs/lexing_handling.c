@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:08:34 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 15:06:25 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:45:22 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,35 @@ int	is_val_start(char c)
  * quotes[0] : single quotes flag
  * quotes[1] : double quotes flag
  */
-char	*fill_new_input(t_my_envp *my_envp, char *input, int *i, int *quotes)
+char	*fill_new_input(t_my_envp *my_envp, t_parser *pars, int *i, int *quotes)
 {
 	char	temp[2];
 	char	*new_input;
 
 	new_input = ft_strdup("");
-	if (input[*i] == '$' && input[*i + 1] != '\0' && \
-	quotes[0] == 0 && (is_val_start(input[*i + 1]) || input[*i + 1] == '?'))
+	if (pars->new_input[*i] == '$' && pars->new_input[*i + 1] != '\0' && \
+	quotes[0] == 0 && \
+	(is_val_start(pars->new_input[*i + 1]) || pars->new_input[*i + 1] == '?'))
 	{
-		if (input[*i + 1] == '?')
+		if (pars->new_input[*i + 1] == '?')
 		{
 			new_input = ft_strjoin_free(new_input, get_exit_status(), 3);
 			(*i)++;
 		}
 		else
-			handle_expansion(input, i, &new_input, my_envp);
-		g_exit_status = 0;
+			handle_expansion(pars->new_input, i, &new_input, my_envp);
+		pars->flag = 1;
 	}
 	else
 	{
-		temp[0] = input[*i];
+		temp[0] = pars->new_input[*i];
 		temp[1] = '\0';
 		new_input = ft_strjoin_free(new_input, temp, 1);
 	}
 	return (new_input);
 }
 
-char	*substitute_dollars(t_my_envp *my_envp, char *input)
+char	*substitute_dollars(t_my_envp *my_envp, t_parser *pars)
 {
 	int		i;
 	char	*new_input;
@@ -103,20 +104,21 @@ char	*substitute_dollars(t_my_envp *my_envp, char *input)
 	quotes[0] = 0;
 	quotes[1] = 0;
 	new_input = ft_strdup("");
-	while (input[++i] != '\0')
+	while (pars->new_input[++i] != '\0')
 	{
-		if (input[i] == '\'' && quotes[1] == 0)
+		if (pars->new_input[i] == '\'' && quotes[1] == 0)
 			quotes[0] = !quotes[0];
-		else if (input[i] == '\"' && quotes[0] == 0)
+		else if (pars->new_input[i] == '\"' && quotes[0] == 0)
 			quotes[1] = !quotes[1];
 		new_input = ft_strjoin_free(new_input, \
-		fill_new_input(my_envp, input, &i, quotes), 3);
+		fill_new_input(my_envp, pars, &i, quotes), 3);
 	}
+	if (pars->flag)
+		g_exit_status = 0;
 	if (quotes[0] == 1 || quotes[1] == 1)
 	{
 		free(new_input);
 		new_input = ft_strdup("echo Error: unmatched quotes");
 	}
-	free(input);
-	return (new_input);
+	return (free(pars->new_input), new_input);
 }

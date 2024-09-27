@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 14:49:49 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:40:04 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_parser
 	char	**command;
 	char	*input;
 	char	*new_input;
+	int		flag;
 }	t_parser;
 
 extern long long	g_exit_status;
@@ -55,7 +56,7 @@ int		execute_handler(t_my_envp *my_envp, char **command);
 char	**list_to_matrix(t_env_var *head, int check_empty);
 int		matrixlen(char **matrix);
 char	*get_input(t_my_envp *my_envp);
-char	*substitute_dollars(t_my_envp *my_envp, char *input);
+char	*substitute_dollars(t_my_envp *my_envp, t_parser *parser);
 int		set_env_var(t_env_var *head, char *name, char *value, int create);
 void	set_exit_status(int status);
 void	builtin_error(char *builtin, char *value, char *error);
