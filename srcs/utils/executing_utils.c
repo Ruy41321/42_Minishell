@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executing_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:45:33 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 22:05:19 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:52:47 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	handle_env_var_assignment(t_my_envp *my_envp, char **piped_command)
 	{
 		*equals_sign = '\0';
 		name = *piped_command;
-		if (get_delim(name) || !ft_isalpha(name[0]))
+		if ((!ft_isalpha(name[0]) && name[0] != '_') || get_delim(name))
 		{
 			*equals_sign = '=';
 			return (0);

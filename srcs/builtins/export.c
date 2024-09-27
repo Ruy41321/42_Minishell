@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:40 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/26 18:01:33 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:50:59 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	export_existing(t_my_envp *my_envp, char *name)
 {
 	char	*value;
 
-	if (!ft_isalpha(name[0]) || name[0] == '_' || get_delim(name))
+	if ((!ft_isalpha(name[0]) && name[0] != '_') || get_delim(name))
 	{
 		builtin_error("export", name, "not a valid identifier");
 		set_exit_status(1);
