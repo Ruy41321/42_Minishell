@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:01:24 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 11:38:10 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:49:20 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,18 @@ char	*look_for_file(char *command, char **path_tokens)
 	return (NULL);
 }
 
-int	handle_wrong_exe(char *full_path)
+int	handle_wrong_exe(char *full_path, char *command_name)
 {
 	struct stat	path_stat;
 
 	if (!full_path)
-	{
-		ft_putstr_fd(full_path, 2);
-		return (ft_putstr_fd(": command not found\n", 2), 127);
-	}
+		return (stamp_file_error(command_name, "command not found"), 127);
 	else if (access(full_path, F_OK) == -1)
-	{
-		ft_putstr_fd(full_path, 2);
-		return (ft_putstr_fd(": No such file or directory\n", 2), 127);
-	}
+		return (stamp_file_error(full_path, "No such file or directory"), 127);
 	else if (access(full_path, X_OK) != 0)
-	{
-		ft_putstr_fd(full_path, 2);
-		return (ft_putstr_fd(": Permission denied\n", 2), 126);
-	}
+		return (stamp_file_error(full_path, "Permission denied"), 126);
 	else if (stat(full_path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-	{
-		ft_putstr_fd(full_path, 2);
-		return (ft_putstr_fd(": Is a directory\n", 2), 126);
-	}
+		return (stamp_file_error(full_path, "Is a directory"), 126);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:29:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 11:42:10 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:37:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	child_process(char **piped_command, t_my_envp *envp)
 		exit(1);
 	remove_quotes_2d(piped_command);
 	full_path = get_full_path(piped_command[0], envp->exported);
-	exit_status = handle_wrong_exe(full_path);
+	exit_status = handle_wrong_exe(full_path, piped_command[0]);
 	if (exit_status)
 	{
 		if (full_path)

@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:43 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/26 15:27:54 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:49:37 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	stamp_file_error(char *full_path, char *error)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(full_path, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("\n", 2);
+}
 
 void	builtin_error(char *builtin, char *value, char *error)
 {
