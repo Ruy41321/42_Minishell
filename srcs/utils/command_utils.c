@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:02:55 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 13:08:11 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/28 15:17:44 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,16 @@ char	*get_local_var(t_my_envp *my_envp, char *name, char *end)
 
 void	init_separeted(char ***separated, int *quotes, int *c, char *input)
 {
+	char	**splitted;
+
 	c[0] = 0;
 	c[1] = -1;
 	c[2] = 0;
 	quotes[0] = 0;
 	quotes[1] = 0;
-	*separated = safe_malloc(sizeof(char *) * 20);
+	splitted = ft_split(input, ' ');
+	*separated = safe_malloc(sizeof(char *) * (ft_arrlen(splitted) + 1));
+	free_command(splitted, -1);
 	*separated[0] = safe_malloc(sizeof(char) * (ft_strlen(input) + 1));
 }
 

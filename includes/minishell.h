@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 15:40:04 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 15:29:03 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	builtin_error(char *builtin, char *value, char *error);
 int		export_builtin(t_my_envp *my_envp, char **command);
 int		pwd_builtin(void);
 void	env_builtin(t_env_var *env);
+void	sigint_handler_heredoc(int sig);
+void	signal_handler1(int sig);
 int		cd_builtin(t_my_envp *my_envp, char **command);
 int		echo_builtin(char **command);
 int		unset_builtin(t_my_envp *my_envp, char **command);
@@ -107,6 +109,9 @@ char	**handle_heredoc(char **command);
 int		handle_wrong_exe(char *full_path, char *command_name);
 void	execve_error(char *full_path, char **list, char **piped_command);
 void	stamp_file_error(char *full_path, char *error);
+int		get_heredoc_fd(int count);
+void	print_heredoc_warning(char *terminator);
+char	*get_unvalid_terminator(char *terminator);
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `"
 # define HEREDOC_WARN "here-document delimited by end-of-file (wanted `"

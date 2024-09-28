@@ -6,7 +6,7 @@ SRCS = main.c srcs/signals.c srcs/command.c srcs/executing.c srcs/utils/utils.c 
 		srcs/utils/command_utils.c srcs/utils/command_utils2.c srcs/redirection.c srcs/pipe.c srcs/utils/path_utils.c \
 		srcs/utils/command_utils3.c srcs/utils/redirection_utils.c srcs/utils/executing_utils.c srcs/utils/envp_utils.c \
 		srcs/builtins/cd.c srcs/builtins/echo.c srcs/builtins/env.c srcs/builtins/exit.c srcs/builtins/export.c \
-		srcs/builtins/pwd.c srcs/builtins/unset.c srcs/utils/pipe_utils.c srcs/heredoc.c srcs/utils/utils2.c
+		srcs/builtins/pwd.c srcs/builtins/unset.c srcs/utils/pipe_utils.c srcs/heredoc.c srcs/utils/utils2.c srcs/utils/herdoc_utils.c
 OBJS = $(SRCS:.c=.o)
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 OBJDIR = objs

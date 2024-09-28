@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/27 15:36:20 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:29:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	clean_tmp_files();
 	free_my_envp(my_envp);
-	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 1);
 	return (0);
 }
