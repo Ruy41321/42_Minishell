@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:04 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/26 15:01:01 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:18:59 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static int	is_chdir_allowed(char *path, int mallocated)
 	}
 	if (mallocated)
 		free(path);
+	g_exit_status = 0;
 	return (0);
 }
 

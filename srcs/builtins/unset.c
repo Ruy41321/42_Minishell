@@ -6,7 +6,7 @@
 /*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:46 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 01:55:27 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:20:54 by flo-dolc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int	unset_builtin(t_my_envp *my_envp, char **command)
 		remove_env_var(&my_envp->exported, command[i]);
 		i++;
 	}
+	g_exit_status = 0;
 	return (0);
 }
