@@ -2,6 +2,9 @@
 
 Minishell is a simple Unix shell developed in C, designed to replicate the basic behavior of Bash by implementing essential features such as command execution, environment variable handling, redirections, pipes, and built-in commands.  
 
+Worked with:
+  - Federico Lo Dolce (https://github.com/flodolce92)
+
 ![](extra/minishell.gif)
 
 ## Main Features  
