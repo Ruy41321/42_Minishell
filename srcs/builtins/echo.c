@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:27 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/09 17:17:02 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:18:57 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ int	echo_builtin(char **command)
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', 1);
-	return (0);
+	return (set_exit_status(0), 0);
 }

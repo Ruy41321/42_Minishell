@@ -3,55 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:47:49 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/21 04:30:14 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 15:28:52 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_heredoc_fd(int count)
+int	redirect_util(int fd, char *terminator)
 {
-	char	*filename;
-	int		fd;
-	char	*str;
-
-	filename = ft_strjoin_free("/tmp/heredoc", ft_itoa(count), 2);
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-	{
-		str = ft_strjoin_free("minishell: ", filename, 2);
-		perror(str);
-		return (free(str), 1);
-	}
-	free(filename);
-	return (fd);
-}
-
-void	print_heredoc_warning(char *terminator)
-{
-	ft_putstr_fd("minishell: warning: ", STDERR_FILENO);
-	ft_putstr_fd(HEREDOC_WARN, STDERR_FILENO);
-	ft_putstr_fd(terminator, STDERR_FILENO);
-	ft_putstr_fd("')\n", STDERR_FILENO);
-}
-
-int	redirect_input_heredoc(char *terminator, int count)
-{
-	int		fd;
 	char	*line;
 
-	fd = get_heredoc_fd(count);
 	while (1)
 	{
+		signal(SIGINT, sigint_handler_heredoc);
 		line = readline("> ");
+		signal(SIGINT, signal_handler1);
 		if (!line)
 		{
 			print_heredoc_warning(terminator);
 			break ;
 		}
+		if (g_exit_status == 300)
+			return (free(line), set_exit_status(130), 1);
 		if (ft_strncmp(line, terminator, ft_strlen(line)) == 0)
 		{
 			free(line);
@@ -61,8 +37,21 @@ int	redirect_input_heredoc(char *terminator, int count)
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	close(fd);
 	return (0);
+}
+
+int	redirect_input_heredoc(char *terminator, int count)
+{
+	int		fd;
+	char	*token;
+	int		ret;
+
+	token = get_unvalid_terminator(terminator);
+	if (token)
+		return (free(token), 1);
+	fd = get_heredoc_fd(count);
+	ret = redirect_util(fd, terminator);
+	return (close(fd), ret);
 }
 
 char	**substitute_heredoc(char **command)
@@ -92,20 +81,49 @@ char	**substitute_heredoc(char **command)
 	return (free_command(command, len), new_command);
 }
 
+void	check_heredoc_err(char **command)
+{
+	int		i;
+	char	*token;
+
+	i = -1;
+	while (command[++i] != NULL)
+	{
+		if (ft_strcmp(command[i], "<<") == 0)
+		{
+			token = get_unvalid_terminator(command[++i]);
+			if (token)
+			{
+				ft_putstr_fd("minishell: syntax error near unexpected token `", \
+				STDERR_FILENO);
+				ft_putstr_fd(token, STDERR_FILENO);
+				free(token);
+				set_exit_status(2);
+				break ;
+			}
+		}
+	}
+}
+
 char	**handle_heredoc(char **command)
 {
 	char	**new_command;
 	int		i;
 	int		count;
+	int		flag;
 
 	i = -1;
 	count = 0;
+	flag = 0;
+	check_heredoc_err(command);
 	while (command[++i] != NULL)
 	{
 		if (ft_strcmp(command[i], "<<") == 0)
 			if (redirect_input_heredoc(command[++i], count++))
-				return (free_command(command, -1), NULL);
+				flag = 1;
 	}
+	if (flag)
+		return (free_command(command, -1), NULL);
 	new_command = substitute_heredoc(command);
 	return (new_command);
 }

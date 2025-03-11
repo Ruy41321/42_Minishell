@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:05:31 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/20 15:16:01 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:29:38 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	t_my_envp	*my_envp;
 	t_parser	parser;
 
+	parser.flag = 0;
 	if (argc > 1 && argv)
 	{
 		ft_putstr_fd("Error: too many arguments\n", 2);
@@ -95,6 +96,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	clean_tmp_files();
 	free_my_envp(my_envp);
-	ft_printf("exit\n");
+	ft_putstr_fd("exit\n", 1);
 	return (0);
 }

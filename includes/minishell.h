@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:46:40 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/24 20:12:29 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/09/28 15:29:03 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_parser
 	char	**command;
 	char	*input;
 	char	*new_input;
+	int		flag;
 }	t_parser;
 
 extern long long	g_exit_status;
@@ -55,11 +56,15 @@ int		execute_handler(t_my_envp *my_envp, char **command);
 char	**list_to_matrix(t_env_var *head, int check_empty);
 int		matrixlen(char **matrix);
 char	*get_input(t_my_envp *my_envp);
-char	*substitute_dollars(t_my_envp *my_envp, char *input);
+char	*substitute_dollars(t_my_envp *my_envp, t_parser *parser);
 int		set_env_var(t_env_var *head, char *name, char *value, int create);
+void	set_exit_status(int status);
+void	builtin_error(char *builtin, char *value, char *error);
 int		export_builtin(t_my_envp *my_envp, char **command);
 int		pwd_builtin(void);
 void	env_builtin(t_env_var *env);
+void	sigint_handler_heredoc(int sig);
+void	signal_handler1(int sig);
 int		cd_builtin(t_my_envp *my_envp, char **command);
 int		echo_builtin(char **command);
 int		unset_builtin(t_my_envp *my_envp, char **command);
@@ -101,7 +106,12 @@ int		exe_pipe(t_my_envp *envp, char ***commands, int *old_pipe, pid_t *ch);
 void	child_process(char **piped_command, t_my_envp *envp);
 void	copy_remaining_chars(char *input, char *output, int *i, int *j);
 char	**handle_heredoc(char **command);
-int		handle_wrong_exe(char *full_path);
+int		handle_wrong_exe(char *full_path, char *command_name);
+void	execve_error(char *full_path, char **list, char **piped_command);
+void	stamp_file_error(char *full_path, char *error);
+int		get_heredoc_fd(int count);
+void	print_heredoc_warning(char *terminator);
+char	*get_unvalid_terminator(char *terminator);
 
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `"
 # define HEREDOC_WARN "here-document delimited by end-of-file (wanted `"

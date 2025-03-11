@@ -1,7 +1,6 @@
 DA FARE:
 
 1.
-	gestire heredoc
 	accertarsi sull uso corretto della globale (new subject)
 
 *. Luigi

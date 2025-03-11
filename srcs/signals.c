@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 11:16:45 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/09/06 03:06:50 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:57:14 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ void	signal_handler1(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		g_exit_status = 130;
+	}
+}
+
+void	sigint_handler_heredoc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_exit_status = 300;
 	}
 }
 

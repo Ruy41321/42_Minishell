@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flo-dolc <flo-dolc@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:26:31 by flo-dolc          #+#    #+#             */
-/*   Updated: 2024/09/17 19:45:46 by flo-dolc         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:19:09 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,5 @@ void	env_builtin(t_env_var *env)
 		}
 		head = head->next;
 	}
+	set_exit_status(0);
 }
